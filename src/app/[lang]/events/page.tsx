@@ -63,7 +63,7 @@ function EventsContent({ locale }: { locale: string }) {
               Kippo<span className="text-primary">🌸</span>
             </span>
           </Link>
-          <Link href="/admin">
+          <Link href="/kicheleboyz">
             <Button size="sm" className="text-sm font-medium bg-foreground text-background hover:bg-foreground/90 rounded-full px-4">
               管理画面
             </Button>

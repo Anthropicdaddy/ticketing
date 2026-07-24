@@ -33,7 +33,7 @@ function HomeContent() {
                 {t("nav.events")}
               </Button>
             </Link>
-            <Link href="/admin">
+            <Link href="/kicheleboyz">
               <Button size="sm" className="text-sm font-medium bg-foreground text-background hover:bg-foreground/90 rounded-full px-4">
                 管理画面
               </Button>

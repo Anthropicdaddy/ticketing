@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { chatWithAI } from "@/lib/ai/groq";
+import { chatWithAgent } from "@/lib/ai/groq";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await chatWithAI(messages);
+    const response = await chatWithAgent(messages);
 
     return NextResponse.json({ response });
   } catch (error) {
