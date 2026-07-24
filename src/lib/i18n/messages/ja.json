@@ -1,0 +1,94 @@
+{
+  "common": {
+    "appName": "Kippo🌸",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "submit": "送信",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "back": "戻る",
+    "next": "次へ",
+    "search": "検索",
+    "noResults": "結果が見つかりません"
+  },
+  "nav": {
+    "home": "ホーム",
+    "events": "イベント",
+    "myOrders": "注文履歴",
+    "language": "言語"
+  },
+  "home": {
+    "hero": "チケットを簡単に購入",
+    "subtitle": "人気コンサートやイベントのチケットを安全に購入できます",
+    "browseEvents": "イベントを見る",
+    "howItWorks": "ご利用方法",
+    "step1": "イベントを選択",
+    "step1Desc": "興味のあるイベントを選んでください",
+    "step2": "PayPayで支払い",
+    "step2Desc": "PayPayでスクリーンショットを送信",
+    "step3": "チケットを受け取る",
+    "step3Desc": "承認後、メールでチケットが届きます"
+  },
+  "events": {
+    "title": "イベント一覧",
+    "noEvents": "現在イベントはありません",
+    "date": "日時",
+    "venue": "会場",
+    "price": "価格",
+    "available": "販売中",
+    "soldOut": "完売",
+    "ticketsFrom": "〜¥{price}から",
+    "selectTier": "チケットタイプを選択",
+    "quantity": "枚数",
+    "addToCart": "カートに追加",
+    "buyNow": "今すぐ購入"
+  },
+  "checkout": {
+    "title": "ご注文内容",
+    "yourInfo": "お客様情報",
+    "name": "お名前",
+    "email": "メールアドレス",
+    "phone": "電話番号",
+    "payment": "支払い方法",
+    "paypayInstructions": "PayPay支払い手順",
+    "step1": "PayPayで以下の金額をお支払いください",
+    "step2": "支払い完了後、スクリーンショットを撮影してください",
+    "step3": "スクリーンショットを管理者に送信してください",
+    "total": "合計金額",
+    "submitOrder": "注文を確定する",
+    "orderSuccess": "注文が正常に送信されました！",
+    "orderPending": "管理者の承認をお待ちください"
+  },
+  "order": {
+    "title": "注文詳細",
+    "orderNumber": "注文番号",
+    "status": "ステータス",
+    "pending": "承認待ち",
+    "approved": "承認済み",
+    "rejected": "ご注文は承認されませんでした",
+    "completed": "チケット発行済み",
+    "downloadTicket": "チケットをダウンロード",
+    "ticketPassword": "チケットのパスワード",
+    "ticketPasswordHint": "PDFを開く際に以下のパスワードを入力してください"
+  },
+  "admin": {
+    "dashboard": "ダッシュボード",
+    "events": "イベント管理",
+    "orders": "注文管理",
+    "approvals": "承認待ち",
+    "ai": "AIアシスタント",
+    "emailLogs": "送信履歴",
+    "stats": {
+      "totalOrders": "総注文数",
+      "pendingApprovals": "承認待ち",
+      "totalRevenue": "総売上",
+      "ticketsSold": "販売済みチケット"
+    },
+    "approve": "承認",
+    "reject": "却下",
+    "viewDetails": "詳細を見る",
+    "screenshot": "支払いスクリーンショット"
+  }
+}

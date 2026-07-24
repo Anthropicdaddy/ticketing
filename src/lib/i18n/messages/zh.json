@@ -1,0 +1,94 @@
+{
+  "common": {
+    "appName": "Kippo🌸",
+    "loading": "加载中...",
+    "error": "发生错误",
+    "submit": "提交",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "back": "返回",
+    "next": "下一步",
+    "search": "搜索",
+    "noResults": "未找到结果"
+  },
+  "nav": {
+    "home": "首页",
+    "events": "活动",
+    "myOrders": "我的订单",
+    "language": "语言"
+  },
+  "home": {
+    "hero": "轻松购票",
+    "subtitle": "安全购买热门演唱会和活动门票",
+    "browseEvents": "浏览活动",
+    "howItWorks": "如何使用",
+    "step1": "选择活动",
+    "step1Desc": "选择您感兴趣的活动",
+    "step2": "PayPay支付",
+    "step2Desc": "通过PayPay发送截图",
+    "step3": "接收门票",
+    "step3Desc": "批准后，门票将通过电子邮件发送"
+  },
+  "events": {
+    "title": "活动列表",
+    "noEvents": "暂无活动",
+    "date": "日期时间",
+    "venue": "地点",
+    "price": "价格",
+    "available": "销售中",
+    "soldOut": "已售罄",
+    "ticketsFrom": "起价 ¥{price}",
+    "selectTier": "选择票种",
+    "quantity": "数量",
+    "addToCart": "加入购物车",
+    "buyNow": "立即购买"
+  },
+  "checkout": {
+    "title": "订单摘要",
+    "yourInfo": "您的信息",
+    "name": "姓名",
+    "email": "电子邮件",
+    "phone": "电话号码",
+    "payment": "支付方式",
+    "paypayInstructions": "PayPay支付说明",
+    "step1": "通过PayPay支付以下金额",
+    "step2": "支付完成后截图",
+    "step3": "将截图发送给管理员",
+    "total": "总计",
+    "submitOrder": "提交订单",
+    "orderSuccess": "订单已成功提交！",
+    "orderPending": "请等待管理员批准"
+  },
+  "order": {
+    "title": "订单详情",
+    "orderNumber": "订单号",
+    "status": "状态",
+    "pending": "等待批准",
+    "approved": "已批准",
+    "rejected": "订单未被批准",
+    "completed": "门票已发放",
+    "downloadTicket": "下载门票",
+    "ticketPassword": "门票密码",
+    "ticketPasswordHint": "请输入以下密码打开PDF"
+  },
+  "admin": {
+    "dashboard": "控制面板",
+    "events": "活动管理",
+    "orders": "订单管理",
+    "approvals": "待批准",
+    "ai": "AI助手",
+    "emailLogs": "发送记录",
+    "stats": {
+      "totalOrders": "总订单数",
+      "pendingApprovals": "待批准",
+      "totalRevenue": "总收入",
+      "ticketsSold": "已售门票"
+    },
+    "approve": "批准",
+    "reject": "拒绝",
+    "viewDetails": "查看详情",
+    "screenshot": "支付截图"
+  }
+}

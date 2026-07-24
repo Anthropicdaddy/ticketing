@@ -1,0 +1,94 @@
+{
+  "common": {
+    "appName": "Kippo🌸",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search",
+    "noResults": "No results found"
+  },
+  "nav": {
+    "home": "Home",
+    "events": "Events",
+    "myOrders": "My Orders",
+    "language": "Language"
+  },
+  "home": {
+    "hero": "Buy Tickets Easily",
+    "subtitle": "Safely purchase tickets for popular concerts and events",
+    "browseEvents": "Browse Events",
+    "howItWorks": "How It Works",
+    "step1": "Choose an Event",
+    "step1Desc": "Select an event you're interested in",
+    "step2": "Pay with PayPay",
+    "step2Desc": "Send a screenshot via PayPay",
+    "step3": "Receive Your Ticket",
+    "step3Desc": "After approval, your ticket is emailed to you"
+  },
+  "events": {
+    "title": "Events",
+    "noEvents": "No events available",
+    "date": "Date & Time",
+    "venue": "Venue",
+    "price": "Price",
+    "available": "Available",
+    "soldOut": "Sold Out",
+    "ticketsFrom": "From ¥{price}",
+    "selectTier": "Select ticket type",
+    "quantity": "Quantity",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now"
+  },
+  "checkout": {
+    "title": "Order Summary",
+    "yourInfo": "Your Information",
+    "name": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "payment": "Payment Method",
+    "paypayInstructions": "PayPay Payment Instructions",
+    "step1": "Pay the following amount via PayPay",
+    "step2": "Take a screenshot after payment",
+    "step3": "Send the screenshot to the administrator",
+    "total": "Total",
+    "submitOrder": "Place Order",
+    "orderSuccess": "Your order has been submitted!",
+    "orderPending": "Please wait for admin approval"
+  },
+  "order": {
+    "title": "Order Details",
+    "orderNumber": "Order Number",
+    "status": "Status",
+    "pending": "Pending Approval",
+    "approved": "Approved",
+    "rejected": "Order was not approved",
+    "completed": "Ticket Issued",
+    "downloadTicket": "Download Ticket",
+    "ticketPassword": "Ticket Password",
+    "ticketPasswordHint": "Enter the password below to open the PDF"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "events": "Event Management",
+    "orders": "Order Management",
+    "approvals": "Pending Approvals",
+    "ai": "AI Assistant",
+    "emailLogs": "Email Logs",
+    "stats": {
+      "totalOrders": "Total Orders",
+      "pendingApprovals": "Pending Approvals",
+      "totalRevenue": "Total Revenue",
+      "ticketsSold": "Tickets Sold"
+    },
+    "approve": "Approve",
+    "reject": "Reject",
+    "viewDetails": "View Details",
+    "screenshot": "Payment Screenshot"
+  }
+}
