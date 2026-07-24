@@ -1,34 +1,36 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Upload, Check, Clock, Shield, Image, X, Send } from "lucide-react";
+import { ArrowLeft, Upload, Check, Clock, Shield, X, Send } from "lucide-react";
 import Link from "next/link";
 
 export default function CheckoutPage() {
-  const t = useTranslations();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [submitted, setSubmitted] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
   const [screenshot, setScreenshot] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [form, setForm] = useState({ name: "", email: "" });
 
   const event = {
     title: "よひろ 2026",
     tier: "VIP席",
     price: "25,000",
-    priceRaw: 25000,
-    quantity: 1,
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError("ファイルサイズは5MB以下にしてください");
+        return;
+      }
       setScreenshot(file);
+      setError("");
       const reader = new FileReader();
       reader.onloadend = () => setPreview(reader.result as string);
       reader.readAsDataURL(file);
@@ -43,31 +45,45 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
+    if (!form.name.trim() || !form.email.trim()) {
+      setError("名前とメールアドレスを入力してください");
+      return;
+    }
+    if (!screenshot) {
+      setError("支払いスクリーンショットをアップロードしてください");
+      return;
+    }
+
     setUploading(true);
 
     try {
       const formData = new FormData();
       formData.append("email", form.email);
       formData.append("name", form.name);
-      formData.append("phone", form.phone);
       formData.append("eventId", "1");
       formData.append("tierId", "t1");
-      if (screenshot) formData.append("screenshot", screenshot);
+      formData.append("screenshot", screenshot);
 
       const res = await fetch("/api/orders", {
         method: "POST",
         body: formData,
       });
 
+      if (!res.ok) {
+        throw new Error("Server error");
+      }
+
       const data = await res.json();
 
       if (data.success) {
         setSubmitted(true);
       } else {
-        alert("エラーが発生しました。もう一度お試しください。");
+        setError("エラーが発生しました。もう一度お試しください。");
       }
     } catch (err) {
-      alert("エラーが発生しました。もう一度お試しください。");
+      setError("エラーが発生しました。もう一度お試しください。");
     } finally {
       setUploading(false);
     }
@@ -81,14 +97,12 @@ export default function CheckoutPage() {
             <Clock className="w-8 h-8 text-amber-500" />
           </div>
           <h2 className="text-2xl font-bold text-foreground mb-2">注文を受け付けました</h2>
-          <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+          <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
             支払い確認中です。約10分以内に確認メールをお送りします。
           </p>
           <div className="bg-secondary/50 rounded-xl p-4 mb-8">
             <p className="text-xs text-muted-foreground">
               確認完了後、チケット（PDF）をメールでお送りします。
-              <br />
-              しばらくお待ちください。
             </p>
           </div>
           <Link href="/ja">
@@ -103,7 +117,6 @@ export default function CheckoutPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/ja" className="flex items-center gap-2.5">
@@ -121,11 +134,16 @@ export default function CheckoutPage() {
       </nav>
 
       <div className="max-w-2xl mx-auto px-6 pt-28 pb-16">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight text-foreground mb-1">支払い</h1>
           <p className="text-sm text-muted-foreground">以下の手順に従ってお支払いください</p>
         </div>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3 mb-6">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Ticket summary */}
@@ -161,20 +179,20 @@ export default function CheckoutPage() {
             <div className="space-y-2.5">
               <div className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-                <p className="text-xs text-muted-foreground leading-relaxed">PayPayアプリで上記IDに <strong className="text-foreground">¥{event.price}</strong> を送金</p>
+                <p className="text-xs text-muted-foreground">PayPayアプリで <strong className="text-foreground">@kippo-ticket</strong> に <strong className="text-foreground">¥{event.price}</strong> を送金</p>
               </div>
               <div className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-                <p className="text-xs text-muted-foreground leading-relaxed">送金完了画面のスクリーンショットを撮影</p>
+                <p className="text-xs text-muted-foreground">送金完了画面のスクリーンショットを撮影</p>
               </div>
               <div className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-                <p className="text-xs text-muted-foreground leading-relaxed">以下のフォームにアップロード</p>
+                <p className="text-xs text-muted-foreground">以下のフォームにアップロードして送信</p>
               </div>
             </div>
           </div>
 
-          {/* Email + Upload */}
+          {/* Customer info + upload */}
           <div className="bg-card rounded-2xl border border-border/50 p-5 space-y-5">
             <h3 className="text-sm font-semibold text-foreground">ご注文情報</h3>
 
@@ -208,7 +226,6 @@ export default function CheckoutPage() {
               />
             </div>
 
-            {/* Screenshot upload */}
             <div>
               <Label className="text-xs font-medium text-muted-foreground mb-1.5 block">
                 支払い証明スクリーンショット <span className="text-destructive">*</span>
@@ -226,11 +243,7 @@ export default function CheckoutPage() {
                 </button>
               ) : (
                 <div className="relative rounded-xl overflow-hidden border border-border/50">
-                  <img
-                    src={preview}
-                    alt="支払いスクリーンショット"
-                    className="w-full h-48 object-cover"
-                  />
+                  <img src={preview} alt="支払いスクリーンショット" className="w-full h-48 object-cover" />
                   <button
                     type="button"
                     onClick={removeFile}
@@ -244,21 +257,14 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="hidden"
-              />
+              <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
             </div>
           </div>
 
-          {/* Submit */}
           <Button
             type="submit"
-            disabled={!form.email || !form.name || !screenshot || uploading}
-            className="w-full h-13 rounded-xl text-sm font-medium gradient-sakura text-white border-0 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={uploading}
+            className="w-full h-13 rounded-xl text-sm font-medium gradient-sakura text-white border-0 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50"
           >
             {uploading ? (
               <span className="flex items-center gap-2">
