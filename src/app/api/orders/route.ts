@@ -11,45 +11,43 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function POST(request: NextRequest) {
+  const logs: string[] = [];
+
   try {
     const formData = await request.formData();
     const email = formData.get("email") as string;
     const name = formData.get("name") as string;
     const screenshot = formData.get("screenshot") as File | null;
 
+    logs.push("Fields received: email=" + email + ", name=" + name + ", hasScreenshot=" + !!screenshot);
+
     if (!email || !name) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      logs.push("ERROR: Missing fields");
+      return NextResponse.json({ error: "Missing required fields", logs }, { status: 400 });
     }
 
-    const orderId = `ORD-${Date.now().toString(36).toUpperCase()}`;
+    const orderId = "ORD-" + Date.now().toString(36).toUpperCase();
+    logs.push("Order ID: " + orderId);
 
     // 1. Send confirmation email
     let emailSent = false;
+    let emailError = null;
     try {
-      await transporter.sendMail({
-        from: `"Kippo🌸" <${process.env.GMAIL_USER}>`,
+      const info = await transporter.sendMail({
+        from: '"Kippo🌸" <' + process.env.GMAIL_USER + ">",
         to: email,
         subject: "【Kippo🌸】注文を受け付けました - 支払い確認中",
-        html: `<!DOCTYPE html>
-<html><head><meta charset="utf-8"></head>
-<body style="font-family:-apple-system,'Hiragino Sans','Yu Gothic',sans-serif;line-height:1.6;color:#1a1a2e;margin:0;padding:0;background:#faf9f7">
-<div style="max-width:500px;margin:0 auto;padding:40px 20px">
-<div style="background:white;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
-<div style="font-size:24px;font-weight:bold;text-align:center;margin-bottom:24px">Kippo<span style="color:#ff6b9d">🌸</span></div>
-<div style="display:inline-flex;align-items:center;gap:6px;background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:20px">⏳ 支払い確認中</div>
-<p style="font-size:14px;margin-bottom:20px">${name} 様、注文ありがとうございます。<br>支払いを確認中です。</p>
-<div style="padding:12px 0;border-bottom:1px solid #f0efe9;font-size:14px;display:flex;justify-content:space-between"><span style="color:#6b6b7b">注文番号</span><span style="font-weight:600">${orderId}</span></div>
-<div style="padding:12px 0;font-size:14px;display:flex;justify-content:space-between"><span style="color:#6b6b7b">金額</span><span style="font-weight:600;color:#ff6b9d">¥25,000</span></div>
-<div style="background:#f0fef4;border:1px solid #bbf7d0;border-radius:12px;padding:16px;margin:24px 0;font-size:13px;color:#166534"><strong>確認まで約10分ほどお待ちください。</strong><br>確認完了後、チケット（PDF）をお送りします。</div>
-<div style="text-align:center;margin-top:24px;font-size:11px;color:#9ca3af">このメールは自動送信されています。</div>
-</div></div></body></html>`,
+        html: '<div style="font-family:sans-serif;padding:40px;max-width:500px;margin:0 auto"><div style="background:white;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.04)"><div style="font-size:24px;font-weight:bold;text-align:center;margin-bottom:24px">Kippo🌸</div><p style="font-size:14px">' + name + ' 様、注文ありがとうございます。</p><p style="font-size:14px">注文番号: <strong>' + orderId + '</strong></p><p style="font-size:14px">金額: <strong style="color:#ff6b9d">¥25,000</strong></p><div style="background:#f0fef4;border:1px solid #bbf7d0;border-radius:12px;padding:16px;margin:20px 0;font-size:13px;color:#166534"><strong>確認まで約10分ほどお待ちください。</strong></div></div></div>',
       });
       emailSent = true;
+      logs.push("Email sent: " + info.messageId);
     } catch (err) {
-      console.error("Email failed:", err);
+      emailError = err instanceof Error ? err.message : "unknown";
+      logs.push("Email FAILED: " + emailError);
     }
 
-    // 2. Send Telegram notification to admin
+    // 2. Send Telegram notification
+    let tgSent = false;
     try {
       await sendPaymentNotification({
         orderId,
@@ -57,27 +55,33 @@ export async function POST(request: NextRequest) {
         customerEmail: email,
         amount: "25,000",
       });
+      tgSent = true;
+      logs.push("Telegram text sent");
+    } catch (err) {
+      logs.push("Telegram text FAILED: " + (err instanceof Error ? err.message : "unknown"));
+    }
 
-      // 3. Send receipt photo to Telegram
-      if (screenshot) {
+    // 3. Send receipt photo
+    if (screenshot) {
+      try {
         const bytes = await screenshot.arrayBuffer();
         const buffer = Buffer.from(bytes);
-        await sendReceiptPhoto(
-          buffer,
-          `📸 支払い証明\n注文: ${orderId}\n顧客: ${name}\n金額: ¥25,000`
-        );
+        await sendReceiptPhoto(buffer, "支払い証明 " + orderId + " - " + name);
+        logs.push("Telegram photo sent");
+      } catch (err) {
+        logs.push("Telegram photo FAILED: " + (err instanceof Error ? err.message : "unknown"));
       }
-    } catch (tgError) {
-      console.error("Telegram notification failed:", tgError);
     }
 
     return NextResponse.json({
       success: true,
       orderId,
       emailSent,
+      tgSent,
+      logs,
     });
   } catch (error) {
-    console.error("Order error:", error);
-    return NextResponse.json({ error: "Failed" }, { status: 500 });
+    logs.push("FATAL: " + (error instanceof Error ? error.message : "unknown"));
+    return NextResponse.json({ error: "Failed", logs }, { status: 500 });
   }
 }
