@@ -1,14 +1,13 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Upload, Clock, Shield, X, Send, Phone, Copy, Check } from "lucide-react";
+import { ArrowLeft, Upload, Clock, Shield, X, Send, Copy, Check } from "lucide-react";
 import Link from "next/link";
 
 export default function CheckoutPage() {
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [submitted, setSubmitted] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -41,7 +40,8 @@ export default function CheckoutPage() {
   const removeFile = () => {
     setScreenshot(null);
     setPreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    const input = document.getElementById("receipt-upload") as HTMLInputElement;
+    if (input) input.value = "";
   };
 
   const copyPhone = () => {
@@ -268,15 +268,14 @@ export default function CheckoutPage() {
               </Label>
 
               {!preview ? (
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="w-full border-2 border-dashed border-border/60 rounded-xl p-8 text-center hover:border-primary/30 hover:bg-primary/5 transition-all duration-200"
+                <label
+                  htmlFor="receipt-upload"
+                  className="flex flex-col items-center justify-center w-full border-2 border-dashed border-border/60 rounded-xl p-8 text-center hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 cursor-pointer"
                 >
-                  <Upload className="w-8 h-8 text-muted-foreground/40 mx-auto mb-3" />
+                  <Upload className="w-8 h-8 text-muted-foreground/40 mb-3" />
                   <p className="text-sm font-medium text-foreground mb-1">タップしてアップロード</p>
                   <p className="text-[10px] text-muted-foreground">JPG, PNG (最大5MB)</p>
-                </button>
+                </label>
               ) : (
                 <div className="relative rounded-xl overflow-hidden border border-border/50">
                   <img src={preview} alt="支払いスクリーンショット" className="w-full h-48 object-cover" />
@@ -294,11 +293,12 @@ export default function CheckoutPage() {
               )}
 
               <input
-                ref={fileInputRef}
+                id="receipt-upload"
                 type="file"
-                accept="image/png, image/jpeg, image/jpg"
+                accept="image/*"
                 onChange={handleFileChange}
-                className="hidden"
+                style={{ position: "absolute", left: "-9999px", opacity: 0 }}
+                tabIndex={-1}
               />
             </div>
           </div>
