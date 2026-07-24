@@ -164,14 +164,53 @@ export default function CheckoutPage() {
               <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-pink-50 text-pink-600 border border-pink-100">PayPay</span>
             </div>
 
+            {/* Open PayPay button */}
+            <a
+              href="paypay://"
+              onClick={(e) => {
+                // Fallback if PayPay not installed
+                setTimeout(() => {
+                  if (!document.hidden) {
+                    window.location.href = "https://paypay.ne.jp/";
+                  }
+                }, 2000);
+              }}
+              className="flex items-center justify-center gap-2 w-full h-14 rounded-xl bg-[#ff0033] hover:bg-[#e6002d] text-white font-bold text-base transition-colors shadow-lg shadow-[#ff0033]/20 hover:shadow-xl hover:shadow-[#ff0033]/30"
+            >
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+              </svg>
+              PayPayで支払う
+            </a>
+
+            <p className="text-center text-[10px] text-muted-foreground">
+              PayPayアプリが開きます。アプリがインストールされてない場合は手動で送金してください。
+            </p>
+
+            <div className="relative flex items-center gap-3 my-2">
+              <div className="h-px flex-1 bg-border/50" />
+              <span className="text-[10px] text-muted-foreground">または手動送金</span>
+              <div className="h-px flex-1 bg-border/50" />
+            </div>
+
             <div className="bg-gradient-to-br from-pink-50/80 to-rose-50/50 rounded-xl p-4 space-y-3">
-              <p className="text-xs font-medium text-rose-700/70">お支払い先</p>
-              <div className="bg-white rounded-lg p-3 border border-pink-100/50">
-                <p className="text-xs text-muted-foreground mb-1">PayPay ID</p>
-                <p className="text-base font-bold text-foreground font-mono">@kippo-ticket</p>
+              <div className="bg-white rounded-lg p-3 border border-pink-100/50 flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] text-muted-foreground mb-0.5">PayPay ID</p>
+                  <p className="text-base font-bold text-foreground font-mono">@kippo-ticket</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText("@kippo-ticket");
+                  }}
+                  className="px-3 py-1.5 rounded-lg bg-pink-50 text-pink-600 text-xs font-medium hover:bg-pink-100 transition-colors"
+                >
+                  コピー
+                </button>
               </div>
               <div className="bg-white rounded-lg p-3 border border-pink-100/50">
-                <p className="text-xs text-muted-foreground mb-1">お支払い金額</p>
+                <p className="text-[10px] text-muted-foreground mb-0.5">お支払い金額</p>
                 <p className="text-2xl font-bold text-rose-600">¥{event.price}</p>
               </div>
             </div>
@@ -179,7 +218,7 @@ export default function CheckoutPage() {
             <div className="space-y-2.5">
               <div className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-                <p className="text-xs text-muted-foreground">PayPayアプリで <strong className="text-foreground">@kippo-ticket</strong> に <strong className="text-foreground">¥{event.price}</strong> を送金</p>
+                <p className="text-xs text-muted-foreground">上のボタンでPayPayアプリを開くか、手動で <strong className="text-foreground">@kippo-ticket</strong> に送金</p>
               </div>
               <div className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
