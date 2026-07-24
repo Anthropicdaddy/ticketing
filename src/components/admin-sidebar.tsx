@@ -16,9 +16,9 @@ import {
 const navItems = [
   { href: "/admin", label: "ダッシュボード", icon: LayoutDashboard },
   { href: "/admin/approvals", label: "承認待ち", icon: Clock },
-  { href: "/admin/events", label: "イベント管理", icon: Calendar },
-  { href: "/admin/orders", label: "注文管理", icon: ShoppingCart },
-  { href: "/admin/ai", label: "AIアシスタント", icon: Bot },
+  { href: "/admin/events", label: "イベント", icon: Calendar },
+  { href: "/admin/orders", label: "注文", icon: ShoppingCart },
+  { href: "/admin/ai", label: "AI", icon: Bot },
   { href: "/admin/emails", label: "送信履歴", icon: Mail },
 ];
 
@@ -26,12 +26,17 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-muted/50 border-r min-h-screen p-4">
-      <div className="mb-8">
-        <h2 className="text-lg font-bold">Kippo🌸</h2>
-        <p className="text-xs text-muted-foreground">管理画面</p>
+    <aside className="w-56 bg-card border-r border-border/50 min-h-screen flex flex-col">
+      <div className="p-5 border-b border-border/50">
+        <Link href="/" className="flex items-center gap-2">
+          <span className="text-base font-bold tracking-tight text-foreground">
+            Kippo<span className="text-primary">🌸</span>
+          </span>
+        </Link>
+        <p className="text-[10px] text-muted-foreground mt-0.5">管理画面</p>
       </div>
-      <nav className="space-y-1">
+
+      <nav className="flex-1 p-3 space-y-0.5">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive =
@@ -42,10 +47,10 @@ export function AdminSidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+                "flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150",
                 isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                  ? "bg-primary/5 text-primary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               )}
             >
               <Icon className="w-4 h-4" />
@@ -54,10 +59,11 @@ export function AdminSidebar() {
           );
         })}
       </nav>
-      <div className="mt-auto pt-8">
+
+      <div className="p-3 border-t border-border/50">
         <Link
           href="/"
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all duration-150"
         >
           <Home className="w-4 h-4" />
           サイトを見る
