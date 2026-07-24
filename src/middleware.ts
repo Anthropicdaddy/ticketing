@@ -1,8 +1,10 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import createMiddleware from "next-intl/middleware";
 import { locales, defaultLocale } from "@/lib/i18n";
+import { NextResponse } from "next/server";
 
 const isAdminRoute = createRouteMatcher(["/kicheleboyz(.*)"]);
+const isApiRoute = createRouteMatcher(["/api(.*)"]);
 
 const handleI18nRouting = createMiddleware({
   locales,
@@ -11,8 +13,12 @@ const handleI18nRouting = createMiddleware({
 });
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isAdminRoute(req)) {
-    await auth.protect();
+  // Skip i18n for admin and API routes
+  if (isAdminRoute(req) || isApiRoute(req)) {
+    if (isAdminRoute(req)) {
+      await auth.protect();
+    }
+    return NextResponse.next();
   }
 
   return handleI18nRouting(req);
@@ -20,6 +26,6 @@ export default clerkMiddleware(async (auth, req) => {
 
 export const config = {
   matcher: [
-    "/((?!_next|api|.*\\..*).*)",
+    "/((?!_next|.*\\..*).*)",
   ],
 };
