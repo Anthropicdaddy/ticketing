@@ -54,6 +54,15 @@ export const events = pgTable("events", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const eventDates = pgTable("event_dates", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventId: uuid("event_id")
+    .references(() => events.id, { onDelete: "cascade" })
+    .notNull(),
+  date: timestamp("date").notNull(),
+  label: varchar("label", { length: 100 }),
+});
+
 export const ticketTiers = pgTable("ticket_tiers", {
   id: uuid("id").defaultRandom().primaryKey(),
   eventId: uuid("event_id")
