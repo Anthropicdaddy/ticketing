@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Kippo🌸 - チケット販売",
   description: "コンサートチケットを安全に購入",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
