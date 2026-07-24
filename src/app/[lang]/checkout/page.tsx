@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Upload, Check, Clock, Shield, X, Send } from "lucide-react";
+import { ArrowLeft, Upload, Clock, Shield, X, Send, Phone, Copy, Check } from "lucide-react";
 import Link from "next/link";
 
 export default function CheckoutPage() {
@@ -15,6 +15,7 @@ export default function CheckoutPage() {
   const [screenshot, setScreenshot] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", email: "" });
+  const [copied, setCopied] = useState(false);
 
   const event = {
     title: "よひろ 2026",
@@ -43,6 +44,12 @@ export default function CheckoutPage() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  const copyPhone = () => {
+    navigator.clipboard.writeText("08019932477");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -66,23 +73,15 @@ export default function CheckoutPage() {
       formData.append("tierId", "t1");
       formData.append("screenshot", screenshot);
 
-      const res = await fetch("/api/orders", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!res.ok) {
-        throw new Error("Server error");
-      }
-
+      const res = await fetch("/api/orders", { method: "POST", body: formData });
+      if (!res.ok) throw new Error("Server error");
       const data = await res.json();
-
       if (data.success) {
         setSubmitted(true);
       } else {
         setError("エラーが発生しました。もう一度お試しください。");
       }
-    } catch (err) {
+    } catch {
       setError("エラーが発生しました。もう一度お試しください。");
     } finally {
       setUploading(false);
@@ -106,9 +105,7 @@ export default function CheckoutPage() {
             </p>
           </div>
           <Link href="/ja">
-            <Button variant="ghost" className="rounded-full text-muted-foreground">
-              トップに戻る
-            </Button>
+            <Button variant="ghost" className="rounded-full text-muted-foreground">トップに戻る</Button>
           </Link>
         </div>
       </main>
@@ -157,7 +154,7 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Payment instructions */}
+          {/* Payment */}
           <div className="bg-card rounded-2xl border border-border/50 p-5 space-y-4">
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-semibold text-foreground">支払い方法</h3>
@@ -166,48 +163,47 @@ export default function CheckoutPage() {
 
             {/* Open PayPay button */}
             <a
-              href="paypay://"
+              href="paypay://send?phone=08019932477&amount=25000"
               onClick={(e) => {
-                // Fallback if PayPay not installed
                 setTimeout(() => {
                   if (!document.hidden) {
-                    window.location.href = "https://paypay.ne.jp/";
+                    window.open("https://paypay.ne.jp/", "_blank");
                   }
-                }, 2000);
+                }, 2500);
               }}
-              className="flex items-center justify-center gap-2 w-full h-14 rounded-xl bg-[#ff0033] hover:bg-[#e6002d] text-white font-bold text-base transition-colors shadow-lg shadow-[#ff0033]/20 hover:shadow-xl hover:shadow-[#ff0033]/30"
+              className="flex items-center justify-center gap-2.5 w-full h-14 rounded-xl bg-[#ff0033] hover:bg-[#e6002d] text-white font-bold text-base transition-all shadow-lg shadow-[#ff0033]/20 hover:shadow-xl active:scale-[0.98]"
             >
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7.5 3C5.01 3 3 5.01 3 7.5v9C3 18.99 5.01 21 7.5 21h9c2.49 0 4.5-2.01 4.5-4.5v-9C21 5.01 18.99 3 16.5 3h-9zm1.08 3.12L12 10.5l3.42-4.38a.75.75 0 011.17.94l-2.5 3.17h3.08a.75.75 0 01.75.75v2.25a.75.75 0 01-.75.75H14l2.5 3.17a.75.75 0 01-1.17.94L12 15l-3.42 4.38a.75.75 0 01-1.17-.94l2.5-3.17H6.75a.75.75 0 01-.75-.75V12.3a.75.75 0 01.75-.75h3.58l-2.5-3.17a.75.75 0 011.17-.94z"/>
               </svg>
               PayPayで支払う
             </a>
 
             <p className="text-center text-[10px] text-muted-foreground">
-              PayPayアプリが開きます。アプリがインストールされてない場合は手動で送金してください。
+              タップでPayPayアプリが開きます
             </p>
 
-            <div className="relative flex items-center gap-3 my-2">
+            <div className="relative flex items-center gap-3">
               <div className="h-px flex-1 bg-border/50" />
               <span className="text-[10px] text-muted-foreground">または手動送金</span>
               <div className="h-px flex-1 bg-border/50" />
             </div>
 
+            {/* Phone number + copy */}
             <div className="bg-gradient-to-br from-pink-50/80 to-rose-50/50 rounded-xl p-4 space-y-3">
-              <div className="bg-white rounded-lg p-3 border border-pink-100/50 flex items-center justify-between">
-                <div>
-                  <p className="text-[10px] text-muted-foreground mb-0.5">PayPay ID</p>
-                  <p className="text-base font-bold text-foreground font-mono">@kippo-ticket</p>
+              <div className="bg-white rounded-lg p-3 border border-pink-100/50">
+                <p className="text-[10px] text-muted-foreground mb-1">PayPay電話番号</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-lg font-bold text-foreground font-mono tracking-wide">080-1993-2477</p>
+                  <button
+                    type="button"
+                    onClick={copyPhone}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-pink-50 text-pink-600 text-xs font-medium hover:bg-pink-100 transition-colors shrink-0"
+                  >
+                    {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    {copied ? "コピー済み" : "コピー"}
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    navigator.clipboard.writeText("@kippo-ticket");
-                  }}
-                  className="px-3 py-1.5 rounded-lg bg-pink-50 text-pink-600 text-xs font-medium hover:bg-pink-100 transition-colors"
-                >
-                  コピー
-                </button>
               </div>
               <div className="bg-white rounded-lg p-3 border border-pink-100/50">
                 <p className="text-[10px] text-muted-foreground mb-0.5">お支払い金額</p>
@@ -218,7 +214,7 @@ export default function CheckoutPage() {
             <div className="space-y-2.5">
               <div className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-                <p className="text-xs text-muted-foreground">上のボタンでPayPayアプリを開くか、手動で <strong className="text-foreground">@kippo-ticket</strong> に送金</p>
+                <p className="text-xs text-muted-foreground">上のボタンでPayPayを開くか、電話番号 <strong className="text-foreground">080-1993-2477</strong> に送金</p>
               </div>
               <div className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
@@ -226,7 +222,7 @@ export default function CheckoutPage() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-                <p className="text-xs text-muted-foreground">以下のフォームにアップロードして送信</p>
+                <p className="text-xs text-muted-foreground">下のフォームにアップロードして送信</p>
               </div>
             </div>
           </div>
@@ -265,6 +261,7 @@ export default function CheckoutPage() {
               />
             </div>
 
+            {/* Upload */}
             <div>
               <Label className="text-xs font-medium text-muted-foreground mb-1.5 block">
                 支払い証明スクリーンショット <span className="text-destructive">*</span>
@@ -274,10 +271,10 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full border-2 border-dashed border-border/60 rounded-xl p-8 text-center hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 cursor-pointer"
+                  className="w-full border-2 border-dashed border-border/60 rounded-xl p-8 text-center hover:border-primary/30 hover:bg-primary/5 transition-all duration-200"
                 >
                   <Upload className="w-8 h-8 text-muted-foreground/40 mx-auto mb-3" />
-                  <p className="text-sm font-medium text-foreground mb-1">クリックしてアップロード</p>
+                  <p className="text-sm font-medium text-foreground mb-1">タップしてアップロード</p>
                   <p className="text-[10px] text-muted-foreground">JPG, PNG (最大5MB)</p>
                 </button>
               ) : (
@@ -286,7 +283,7 @@ export default function CheckoutPage() {
                   <button
                     type="button"
                     onClick={removeFile}
-                    className="absolute top-2 right-2 w-7 h-7 rounded-full bg-foreground/80 flex items-center justify-center text-white hover:bg-foreground transition-colors"
+                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-foreground/80 flex items-center justify-center text-white hover:bg-foreground transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -296,7 +293,13 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png, image/jpeg, image/jpg"
+                onChange={handleFileChange}
+                className="hidden"
+              />
             </div>
           </div>
 
