@@ -45,9 +45,22 @@ export default function CheckoutPage() {
   };
 
   const copyPhone = () => {
-    navigator.clipboard.writeText("08019932477");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      navigator.clipboard.writeText("08019932477");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = "08019932477";
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,17 +82,17 @@ export default function CheckoutPage() {
       const formData = new FormData();
       formData.append("email", form.email);
       formData.append("name", form.name);
+      formData.append("amount", "25000");
       formData.append("eventId", "1");
       formData.append("tierId", "t1");
       formData.append("screenshot", screenshot);
 
       const res = await fetch("/api/orders", { method: "POST", body: formData });
-      if (!res.ok) throw new Error("Server error");
       const data = await res.json();
-      if (data.success) {
+      if (res.ok && data.success) {
         setSubmitted(true);
       } else {
-        setError("エラーが発生しました。もう一度お試しください。");
+        setError(data.error || "エラーが発生しました。もう一度お試しください。");
       }
     } catch {
       setError("エラーが発生しました。もう一度お試しください。");
@@ -213,15 +226,12 @@ export default function CheckoutPage() {
 
             <div className="space-y-2.5">
               <div className="flex items-start gap-3">
-                <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
                 <p className="text-xs text-muted-foreground">上のボタンでPayPayを開くか、電話番号 <strong className="text-foreground">080-1993-2477</strong> に送金</p>
               </div>
               <div className="flex items-start gap-3">
-                <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
                 <p className="text-xs text-muted-foreground">送金完了画面のスクリーンショットを撮影</p>
               </div>
               <div className="flex items-start gap-3">
-                <span className="w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
                 <p className="text-xs text-muted-foreground">下のフォームにアップロードして送信</p>
               </div>
             </div>

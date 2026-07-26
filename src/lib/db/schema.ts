@@ -38,6 +38,12 @@ export const paymentStatusEnum = pgEnum("payment_status", [
 
 export const adminRoleEnum = pgEnum("admin_role", ["super_admin", "admin"]);
 
+export const scrapeStatusEnum = pgEnum("scrape_status", [
+  "pending",
+  "approved",
+  "rejected",
+]);
+
 export const events = pgTable("events", {
   id: uuid("id").defaultRandom().primaryKey(),
   titleJa: varchar("title_ja", { length: 255 }).notNull(),
@@ -149,4 +155,25 @@ export const emailLogs = pgTable("email_logs", {
   subject: varchar("subject", { length: 500 }).notNull(),
   status: varchar("status", { length: 20 }).default("sent").notNull(),
   sentAt: timestamp("sent_at").defaultNow().notNull(),
+});
+
+export const scrapedEvents = pgTable("scraped_events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  sourceUrl: varchar("source_url", { length: 1000 }).notNull(),
+  sourceSite: varchar("source_site", { length: 100 }).notNull(),
+  titleJa: varchar("title_ja", { length: 255 }).notNull(),
+  titleEn: varchar("title_en", { length: 255 }),
+  descriptionJa: text("description_ja"),
+  venue: varchar("venue", { length: 255 }).notNull(),
+  address: varchar("address", { length: 500 }),
+  eventDate: timestamp("event_date").notNull(),
+  imageUrl: varchar("image_url", { length: 1000 }),
+  priceMin: decimal("price_min", { precision: 10, scale: 2 }),
+  priceMax: decimal("price_max", { precision: 10, scale: 2 }),
+  tierInfo: text("tier_info"),
+  rawHtml: text("raw_html"),
+  status: scrapeStatusEnum("status").default("pending").notNull(),
+  reviewedBy: uuid("reviewed_by").references(() => adminUsers.id),
+  scrapedAt: timestamp("scraped_at").defaultNow().notNull(),
+  reviewedAt: timestamp("reviewed_at"),
 });

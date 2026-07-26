@@ -34,7 +34,12 @@ export default function OrdersManagementPage() {
     fetch("/api/admin/orders")
       .then((r) => r.json())
       .then((data) => {
-        setOrders(data);
+        setOrders(Array.isArray(data) ? data : []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch orders:", err);
+        setOrders([]);
         setLoading(false);
       });
   }, []);

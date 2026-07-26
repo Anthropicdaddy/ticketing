@@ -1,10 +1,34 @@
-import Groq from "groq-sdk";
 import { db } from "@/lib/db";
 import { orders, events, tickets, ticketTiers, payments } from "@/lib/db/schema";
 import { eq, sql, count, sum } from "drizzle-orm";
 
-function getGroq() {
-  return new Groq({ apiKey: process.env.GROQ_API_KEY });
+const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
+const NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1";
+
+async function nvidiaChat(messages: any[], tools?: any[], toolChoice?: string) {
+  const body: any = {
+    model: "nvidia/nemotron-3-ultra-550b-a55b",
+    messages,
+    temperature: 0.3,
+    max_tokens: 1024,
+  };
+  if (tools) {
+    body.tools = tools;
+    body.tool_choice = toolChoice ?? "auto";
+  }
+  const res = await fetch(`${NVIDIA_BASE_URL}/chat/completions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${NVIDIA_API_KEY}`,
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`NVIDIA API error ${res.status}: ${err}`);
+  }
+  return res.json();
 }
 
 interface ChatMessage {
@@ -204,15 +228,11 @@ export async function chatWithAgent(messages: ChatMessage[]): Promise<string> {
   const systemMessage: ChatMessage = { role: "system", content: SYSTEM_PROMPT };
 
   try {
-    const groq = getGroq();
-    const completion = await groq.chat.completions.create({
-      messages: [systemMessage, ...messages],
-      model: "llama-3.3-70b-versatile",
-      temperature: 0.3,
-      max_tokens: 1024,
-      tools: GROQ_TOOLS,
-      tool_choice: "auto",
-    });
+    const completion = await nvidiaChat(
+      [systemMessage, ...messages],
+      GROQ_TOOLS,
+      "auto"
+    );
 
     const choice = completion.choices[0];
 
@@ -225,22 +245,16 @@ export async function chatWithAgent(messages: ChatMessage[]): Promise<string> {
       if (tool) {
         const result = await tool.execute(funcArgs);
 
-        const groqClient = getGroq();
-        const followUp = await groqClient.chat.completions.create({
-          messages: [
-            systemMessage,
-            ...messages,
-            choice.message,
-            {
-              role: "tool",
-              tool_call_id: toolCall.id,
-              content: result,
-            },
-          ],
-          model: "llama3-70b-8192",
-          temperature: 0.7,
-          max_tokens: 1024,
-        });
+        const followUp = await nvidiaChat([
+          systemMessage,
+          ...messages,
+          choice.message,
+          {
+            role: "tool",
+            tool_call_id: toolCall.id,
+            content: result,
+          },
+        ]);
 
         return followUp.choices[0]?.message?.content || result;
       }
