@@ -1,64 +1,63 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Check, X } from "lucide-react";
+import { Check, X, Loader2 } from "lucide-react";
 
 interface EmailLog {
   id: string;
+  orderId: string;
   toEmail: string;
   subject: string;
-  status: "sent" | "failed";
+  status: string;
   sentAt: string;
 }
 
-const sampleEmails: EmailLog[] = [
-  {
-    id: "EM-001",
-    toEmail: "sato@example.com",
-    subject: "チケット発行のお知らせ - よひろ 2026",
-    status: "sent",
-    sentAt: "2026-07-23T16:00:00",
-  },
-  {
-    id: "EM-002",
-    toEmail: "yamada@example.com",
-    subject: "チケット発行のお知らせ - よひろ 2026",
-    status: "sent",
-    sentAt: "2026-07-22T10:30:00",
-  },
-  {
-    id: "EM-003",
-    toEmail: "error@example.com",
-    subject: "チケット発行のお知らせ - (summer) festival",
-    status: "failed",
-    sentAt: "2026-07-21T14:15:00",
-  },
-];
-
 export default function EmailsPage() {
+  const [emails, setEmails] = useState<EmailLog[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin/emails")
+      .then((r) => r.json())
+      .then((data) => {
+        setEmails(data);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  const sent = emails.filter((e) => e.status === "sent").length;
+  const failed = emails.filter((e) => e.status === "failed").length;
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">送信履歴</h1>
         <div className="flex gap-2 text-sm text-muted-foreground">
-          <span>送信成功: {sampleEmails.filter((e) => e.status === "sent").length}</span>
-          <span>•</span>
-          <span>送信失敗: {sampleEmails.filter((e) => e.status === "failed").length}</span>
+          <span>送信成功: {sent}</span>
+          <span>·</span>
+          <span>送信失敗: {failed}</span>
         </div>
       </div>
 
       <div className="space-y-4">
-        {sampleEmails.map((email) => (
+        {emails.map((email) => (
           <Card key={email.id}>
             <CardContent className="p-4">
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      email.status === "sent"
-                        ? "bg-green-100"
-                        : "bg-red-100"
+                      email.status === "sent" ? "bg-green-100" : "bg-red-100"
                     }`}
                   >
                     {email.status === "sent" ? (
@@ -69,17 +68,14 @@ export default function EmailsPage() {
                   </div>
                   <div>
                     <p className="font-medium">{email.subject}</p>
-                    <p className="text-sm text-muted-foreground">
-                      宛先: {email.toEmail}
-                    </p>
+                    <p className="text-sm text-muted-foreground">宛先: {email.toEmail}</p>
+                    {email.orderId && (
+                      <p className="text-xs text-muted-foreground font-mono">注文: {email.orderId.slice(0, 16)}</p>
+                    )}
                   </div>
                 </div>
                 <div className="text-right">
-                  <Badge
-                    variant={
-                      email.status === "sent" ? "default" : "destructive"
-                    }
-                  >
+                  <Badge variant={email.status === "sent" ? "default" : "destructive"}>
                     {email.status === "sent" ? "送信成功" : "送信失敗"}
                   </Badge>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -90,6 +86,14 @@ export default function EmailsPage() {
             </CardContent>
           </Card>
         ))}
+
+        {emails.length === 0 && (
+          <Card>
+            <CardContent className="p-8 text-center">
+              <p className="text-muted-foreground">送信履歴はありません</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
