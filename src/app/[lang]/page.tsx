@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { TicketRequestForm } from "@/components/ticket-request-form";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -19,7 +20,6 @@ function HomeContent() {
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
@@ -37,13 +37,10 @@ function HomeContent() {
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-        {/* Subtle background pattern */}
+      <section className="relative pt-32 pb-12 px-6 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 right-[10%] w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
           <div className="absolute bottom-10 left-[5%] w-96 h-96 bg-primary/3 rounded-full blur-3xl" />
-          {/* Floating petals */}
           <svg className="absolute top-32 left-[15%] w-4 h-4 text-primary/20 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10 2C10 2 4 6 4 10C4 14 10 18 10 18C10 18 16 14 16 10C16 6 10 2 10 2Z" />
           </svg>
@@ -58,37 +55,29 @@ function HomeContent() {
         <div className="max-w-4xl mx-auto text-center relative">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-mint animate-pulse" />
-            <span className="text-xs font-medium text-muted-foreground">安全なチケット取引</span>
+            <span className="text-xs font-medium text-muted-foreground">チケット探索サービス</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground mb-6 leading-[1.1]">
-            チケットを、
+            探してるチケット、
             <br />
-            <span className="text-primary">もっと身近に。</span>
+            <span className="text-primary">見つけてあげる。</span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
-            人気コンサートやイベントのチケットを、
+            欲しいチケットを教えてください。
             <br className="hidden md:block" />
-            簡単に・安全に・ずっとお得に。
+            Kippoが代わりに探して、お届けします。
           </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/events">
-              <Button size="lg" className="h-14 px-8 text-base font-medium rounded-full gradient-sakura text-white border-0 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200">
-                イベントを探す
-              </Button>
-            </Link>
-            <Link href="#how-it-works">
-              <Button variant="ghost" size="lg" className="h-14 px-8 text-base font-medium text-muted-foreground hover:text-foreground rounded-full">
-                ご利用方法
-              </Button>
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* How it works */}
+      <section className="py-12 px-6">
+        <div className="max-w-2xl mx-auto">
+          <TicketRequestForm />
+        </div>
+      </section>
+
       <section id="how-it-works" className="py-24 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -104,34 +93,34 @@ function HomeContent() {
                 step: "01",
                 icon: (
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                   </svg>
                 ),
-                titleJa: "イベントを選択",
-                titleEn: "Choose Event",
-                desc: "興味のあるイベントを\n見つけて選択",
+                titleJa: "リクエストを送る",
+                titleEn: "Send Request",
+                desc: "欲しいチケットの情報を\n简单にフォームに入力",
               },
               {
                 step: "02",
                 icon: (
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                   </svg>
                 ),
-                titleJa: "PayPayで支払い",
-                titleEn: "Pay with PayPay",
-                desc: "PayPayで簡単支払い\nスクリーンショットを送信",
+                titleJa: "Kippoが探す",
+                titleEn: "Kippo Searches",
+                desc: "スタッフが最適なチケットを\n探してお届けします",
               },
               {
                 step: "03",
                 icon: (
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z" />
                   </svg>
                 ),
-                titleJa: "チケットを受け取る",
-                titleEn: "Get Ticket",
-                desc: "承認後、パスワード保護\nPDFチケットをメール送付",
+                titleJa: "メールで連絡",
+                titleEn: "Email Update",
+                desc: "チケットが見つかったら\n価格と支払い方法をお知らせ",
               },
             ].map((item) => (
               <Card key={item.step} className="group border-0 bg-card shadow-soft hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 rounded-2xl overflow-hidden">
@@ -153,7 +142,6 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="relative rounded-3xl overflow-hidden gradient-sakura p-12 md:p-16 text-center">
@@ -167,22 +155,24 @@ function HomeContent() {
             </div>
             <div className="relative">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
-                さぁ、始めよう。
+                お探しのチケット、見つかりますか？
               </h2>
               <p className="text-white/80 mb-8 max-w-md mx-auto">
-                あなたの好きなアーティストのライブに行ける、その一歩を。
+                人気イベントのチケットはすぐに完売します。<br />
+                でも安心してください。Kippoがお手伝いします。
               </p>
-              <Link href="/events">
-                <Button size="lg" className="h-14 px-8 text-base font-medium rounded-full bg-white text-primary hover:bg-white/90 shadow-lg">
-                  今すぐ始める
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                className="h-14 px-8 text-base font-medium rounded-full bg-white text-primary hover:bg-white/90 shadow-lg"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              >
+                チケットを探す
+              </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-border/50 py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">

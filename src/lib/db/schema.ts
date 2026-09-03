@@ -38,6 +38,13 @@ export const paymentStatusEnum = pgEnum("payment_status", [
 
 export const adminRoleEnum = pgEnum("admin_role", ["super_admin", "admin"]);
 
+export const ticketRequestStatusEnum = pgEnum("ticket_request_status", [
+  "pending",
+  "searching",
+  "found",
+  "completed",
+]);
+
 export const events = pgTable("events", {
   id: uuid("id").defaultRandom().primaryKey(),
   titleJa: varchar("title_ja", { length: 255 }).notNull(),
@@ -52,6 +59,15 @@ export const events = pgTable("events", {
   imageUrl: varchar("image_url", { length: 500 }),
   status: eventStatusEnum("status").default("draft").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const eventDates = pgTable("event_dates", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventId: uuid("event_id")
+    .references(() => events.id, { onDelete: "cascade" })
+    .notNull(),
+  date: timestamp("date").notNull(),
+  label: varchar("label", { length: 100 }),
 });
 
 export const ticketTiers = pgTable("ticket_tiers", {
@@ -140,4 +156,17 @@ export const emailLogs = pgTable("email_logs", {
   subject: varchar("subject", { length: 500 }).notNull(),
   status: varchar("status", { length: 20 }).default("sent").notNull(),
   sentAt: timestamp("sent_at").defaultNow().notNull(),
+});
+
+export const ticketRequests = pgTable("ticket_requests", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventName: varchar("event_name", { length: 255 }).notNull(),
+  eventDate: timestamp("event_date"),
+  venue: varchar("venue", { length: 255 }),
+  quantity: integer("quantity").notNull(),
+  maxBudget: decimal("max_budget", { precision: 10, scale: 2 }),
+  customerName: varchar("customer_name", { length: 255 }).notNull(),
+  customerEmail: varchar("customer_email", { length: 255 }).notNull(),
+  status: ticketRequestStatusEnum("status").default("pending").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });

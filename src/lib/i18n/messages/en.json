@@ -16,20 +16,22 @@
   "nav": {
     "home": "Home",
     "events": "Events",
+    "findTickets": "Find Tickets",
     "myOrders": "My Orders",
     "language": "Language"
   },
   "home": {
-    "hero": "Buy Tickets Easily",
-    "subtitle": "Safely purchase tickets for popular concerts and events",
+    "hero": "Find Your Tickets",
+    "subtitle": "Tell us what you need, Kippo will find it for you",
     "browseEvents": "Browse Events",
+    "findTickets": "Find Tickets",
     "howItWorks": "How It Works",
-    "step1": "Choose an Event",
-    "step1Desc": "Select an event you're interested in",
-    "step2": "Pay with PayPay",
-    "step2Desc": "Send a screenshot via PayPay",
-    "step3": "Receive Your Ticket",
-    "step3Desc": "After approval, your ticket is emailed to you"
+    "step1": "Send a Request",
+    "step1Desc": "Tell us which tickets you need",
+    "step2": "Kippo Searches",
+    "step2Desc": "We find the best tickets for you",
+    "step3": "Email Update",
+    "step3Desc": "We notify you with price and payment info"
   },
   "events": {
     "title": "Events",
@@ -78,6 +80,7 @@
     "events": "Event Management",
     "orders": "Order Management",
     "approvals": "Pending Approvals",
+    "requests": "Ticket Requests",
     "ai": "AI Assistant",
     "emailLogs": "Email Logs",
     "stats": {

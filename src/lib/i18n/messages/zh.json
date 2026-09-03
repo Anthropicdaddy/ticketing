@@ -16,20 +16,22 @@
   "nav": {
     "home": "首页",
     "events": "活动",
+    "findTickets": "找票",
     "myOrders": "我的订单",
     "language": "语言"
   },
   "home": {
-    "hero": "轻松购票",
-    "subtitle": "安全购买热门演唱会和活动门票",
+    "hero": "找票服务",
+    "subtitle": "告诉我们您需要什么票，Kippo帮您找到",
     "browseEvents": "浏览活动",
+    "findTickets": "找票",
     "howItWorks": "如何使用",
-    "step1": "选择活动",
-    "step1Desc": "选择您感兴趣的活动",
-    "step2": "PayPay支付",
-    "step2Desc": "通过PayPay发送截图",
-    "step3": "接收门票",
-    "step3Desc": "批准后，门票将通过电子邮件发送"
+    "step1": "发送请求",
+    "step1Desc": "告诉我们您需要的门票信息",
+    "step2": "Kippo搜索",
+    "step2Desc": "我们为您找到最佳门票",
+    "step3": "邮件通知",
+    "step3Desc": "找到后通过邮件通知您价格和支付方式"
   },
   "events": {
     "title": "活动列表",
@@ -78,6 +80,7 @@
     "events": "活动管理",
     "orders": "订单管理",
     "approvals": "待批准",
+    "requests": "门票请求",
     "ai": "AI助手",
     "emailLogs": "发送记录",
     "stats": {

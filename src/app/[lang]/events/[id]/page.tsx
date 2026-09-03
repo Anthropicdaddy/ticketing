@@ -1,67 +1,77 @@
-import { useTranslations } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Loader2 } from "lucide-react";
 
-type Props = {
-  params: Promise<{ lang: string; id: string }>;
-};
-
-export default async function EventDetailPage({ params }: Props) {
-  const { lang, id } = await params;
-  setRequestLocale(lang);
-  return <EventDetailContent eventId={id} locale={lang} />;
+interface Tier {
+  id: string;
+  nameJa: string;
+  nameEn: string;
+  nameZh: string;
+  price: string;
+  quantityTotal: number;
+  quantitySold: number;
 }
 
-function EventDetailContent({ eventId, locale }: { eventId: string; locale: string }) {
-  const t = useTranslations();
+interface EventDetail {
+  id: string;
+  titleJa: string;
+  titleEn: string;
+  titleZh: string;
+  descriptionJa: string | null;
+  descriptionEn: string | null;
+  descriptionZh: string | null;
+  venue: string;
+  address: string | null;
+  eventDate: string;
+  imageUrl: string | null;
+  status: string;
+  tiers: Tier[];
+  dates: { id: string; date: string; label: string | null }[];
+}
 
-  const event = {
-    id: eventId,
-    title: { ja: "よひろ 2026", en: "Yohiro 2026", zh: "Yohiro 2026" },
-    description: {
-      ja: "人気アーティストによる特別なコンサートイベント。豪華ゲストも出演予定。一夜限りの特別なステージをお見逃しなく。",
-      en: "A special concert event by a popular artist. Special guests also scheduled.",
-      zh: "人气艺术家的特别演唱会活动。还有特别嘉宾出演。",
-    },
-    venue: "東京ドーム",
-    address: "東京都文京区后楽1-3-61",
-    date: "2026-08-15T19:00:00",
-    tiers: [
-      {
-        id: "t1",
-        name: { ja: "VIP席", en: "VIP Seat", zh: "VIP座位" },
-        price: "25,000",
-        total: 50,
-        sold: 32,
-        perks: { ja: "特典付き", en: "With perks", zh: "附赠品" },
-      },
-      {
-        id: "t2",
-        name: { ja: "A席", en: "Seat A", zh: "A座" },
-        price: "15,000",
-        total: 200,
-        sold: 145,
-        perks: null,
-      },
-      {
-        id: "t3",
-        name: { ja: "B席", en: "Seat B", zh: "B座" },
-        price: "8,800",
-        total: 500,
-        sold: 498,
-        perks: null,
-      },
-    ],
-  };
+export default function EventDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
+  const [event, setEvent] = useState<EventDetail | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const localizedTitle = event.title[locale as keyof typeof event.title] || event.title.ja;
-  const localizedDesc = event.description[locale as keyof typeof event.description] || event.description.ja;
+  useEffect(() => {
+    if (!id) return;
+    fetch(`/api/public/events/${id}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setEvent(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      </main>
+    );
+  }
+
+  if (!event) {
+    return (
+      <main className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <p className="text-muted-foreground">イベントが見つかりません</p>
+        <Link href="/events">
+          <Button variant="outline">← イベント一覧に戻る</Button>
+        </Link>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
@@ -80,60 +90,78 @@ function EventDetailContent({ eventId, locale }: { eventId: string; locale: stri
       <div className="max-w-5xl mx-auto px-6 pt-28 pb-16">
         {/* Hero */}
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-background mb-10 aspect-[21/9] flex items-center justify-center">
-          <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
-          <div className="relative text-center">
-            <div className="w-20 h-20 rounded-2xl bg-white/60 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 shadow-soft">
-              <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
-              </svg>
-            </div>
-          </div>
+          {event.imageUrl ? (
+            <img src={event.imageUrl} alt={event.titleJa} className="w-full h-full object-cover" />
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+              <div className="relative text-center">
+                <div className="w-20 h-20 rounded-2xl bg-white/60 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 shadow-soft">
+                  <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+                  </svg>
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="grid lg:grid-cols-3 gap-10">
           {/* Left: Event info */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Title + meta */}
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <Badge variant="secondary" className="bg-mint/10 text-mint border-0 text-xs font-semibold">
                   ○ 販売中
                 </Badge>
-                <Badge variant="secondary" className="bg-primary/5 text-primary border-0 text-xs">
-                  コンサート
-                </Badge>
+                {event.dates.length > 1 && (
+                  <Badge variant="secondary" className="bg-primary/5 text-primary border-0 text-xs">
+                    {event.dates.length}日間
+                  </Badge>
+                )}
               </div>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4">
-                {localizedTitle}
+                {event.titleJa}
               </h1>
-              <p className="text-muted-foreground leading-relaxed">{localizedDesc}</p>
+              {event.descriptionJa && (
+                <p className="text-muted-foreground leading-relaxed">{event.descriptionJa}</p>
+              )}
             </div>
 
             {/* Details */}
             <div className="bg-card rounded-2xl border border-border/50 p-6 space-y-4">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center shrink-0">
-                  <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground">
-                    {new Date(event.date).toLocaleDateString(locale, {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      weekday: "long",
-                    })}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    開場 {new Date(event.date).toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}
-                  </p>
-                </div>
-              </div>
+              {/* Dates */}
+              {event.dates.length > 0 && (
+                <>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center shrink-0">
+                      <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                      </svg>
+                    </div>
+                    <div>
+                      {event.dates.map((d, i) => (
+                        <div key={d.id} className="mb-1 last:mb-0">
+                          <p className="text-sm font-medium text-foreground">
+                            {d.label && <span className="text-primary mr-1">{d.label}:</span>}
+                            {new Date(d.date).toLocaleDateString("ja-JP", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                              weekday: "long",
+                            })}
+                            {" "}
+                            {new Date(d.date).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="h-px bg-border/50" />
+                </>
+              )}
 
-              <div className="h-px bg-border/50" />
-
+              {/* Venue */}
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center shrink-0">
                   <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -143,7 +171,9 @@ function EventDetailContent({ eventId, locale }: { eventId: string; locale: stri
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground">{event.venue}</p>
-                  <p className="text-sm text-muted-foreground">{event.address}</p>
+                  {event.address && (
+                    <p className="text-sm text-muted-foreground">{event.address}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -158,9 +188,8 @@ function EventDetailContent({ eventId, locale }: { eventId: string; locale: stri
 
                 <div className="space-y-3">
                   {event.tiers.map((tier) => {
-                    const remaining = tier.total - tier.sold;
+                    const remaining = tier.quantityTotal - tier.quantitySold;
                     const isAvailable = remaining > 0;
-                    const tierName = tier.name[locale as keyof typeof tier.name] || tier.name.ja;
                     const statusIcon = remaining > 20 ? "○" : remaining > 0 ? "△" : "×";
                     const statusColor = remaining > 20 ? "text-mint" : remaining > 0 ? "text-amber-500" : "text-destructive";
 
@@ -169,9 +198,9 @@ function EventDetailContent({ eventId, locale }: { eventId: string; locale: stri
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <span className={`text-sm font-bold ${statusColor}`}>{statusIcon}</span>
-                            <span className="text-sm font-medium text-foreground">{tierName}</span>
+                            <span className="text-sm font-medium text-foreground">{tier.nameJa}</span>
                           </div>
-                          <span className="text-sm font-bold text-foreground">¥{tier.price}</span>
+                          <span className="text-sm font-bold text-foreground">¥{Number(tier.price).toLocaleString()}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] text-muted-foreground">
@@ -192,10 +221,13 @@ function EventDetailContent({ eventId, locale }: { eventId: string; locale: stri
                       </div>
                     );
                   })}
+
+                  {event.tiers.length === 0 && (
+                    <p className="text-sm text-muted-foreground text-center py-4">チケット情報はまだありません</p>
+                  )}
                 </div>
               </div>
 
-              {/* Footer */}
               <div className="px-6 py-4 bg-secondary/50 border-t border-border/50">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

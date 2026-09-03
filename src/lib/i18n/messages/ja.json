@@ -16,20 +16,22 @@
   "nav": {
     "home": "ホーム",
     "events": "イベント",
+    "findTickets": "チケットを探す",
     "myOrders": "注文履歴",
     "language": "言語"
   },
   "home": {
-    "hero": "チケットを簡単に購入",
-    "subtitle": "人気コンサートやイベントのチケットを安全に購入できます",
+    "hero": "探してるチケット、見つけてあげる。",
+    "subtitle": "欲しいチケットを教えてください。Kippoが代わりに探して、お届けします。",
     "browseEvents": "イベントを見る",
+    "findTickets": "チケットを探す",
     "howItWorks": "ご利用方法",
-    "step1": "イベントを選択",
-    "step1Desc": "興味のあるイベントを選んでください",
-    "step2": "PayPayで支払い",
-    "step2Desc": "PayPayでスクリーンショットを送信",
-    "step3": "チケットを受け取る",
-    "step3Desc": "承認後、メールでチケットが届きます"
+    "step1": "リクエストを送る",
+    "step1Desc": "欲しいチケットの情報を入力",
+    "step2": "Kippoが探す",
+    "step2Desc": "スタッフが最適なチケットを探してお届け",
+    "step3": "メールで連絡",
+    "step3Desc": "チケットが見つかったら価格と支払い方法をお知らせ"
   },
   "events": {
     "title": "イベント一覧",
@@ -78,6 +80,7 @@
     "events": "イベント管理",
     "orders": "注文管理",
     "approvals": "承認待ち",
+    "requests": "チケットリクエスト",
     "ai": "AIアシスタント",
     "emailLogs": "送信履歴",
     "stats": {
