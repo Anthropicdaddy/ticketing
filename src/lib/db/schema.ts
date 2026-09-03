@@ -45,6 +45,12 @@ export const ticketRequestStatusEnum = pgEnum("ticket_request_status", [
   "completed",
 ]);
 
+export const scrapeStatusEnum = pgEnum("scrape_status", [
+  "pending",
+  "approved",
+  "rejected",
+]);
+
 export const events = pgTable("events", {
   id: uuid("id").defaultRandom().primaryKey(),
   titleJa: varchar("title_ja", { length: 255 }).notNull(),
@@ -169,4 +175,25 @@ export const ticketRequests = pgTable("ticket_requests", {
   customerEmail: varchar("customer_email", { length: 255 }).notNull(),
   status: ticketRequestStatusEnum("status").default("pending").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const scrapedEvents = pgTable("scraped_events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  sourceUrl: varchar("source_url", { length: 1000 }).notNull(),
+  sourceSite: varchar("source_site", { length: 100 }).notNull(),
+  titleJa: varchar("title_ja", { length: 255 }).notNull(),
+  titleEn: varchar("title_en", { length: 255 }),
+  descriptionJa: text("description_ja"),
+  venue: varchar("venue", { length: 255 }).notNull(),
+  address: varchar("address", { length: 500 }),
+  eventDate: timestamp("event_date").notNull(),
+  imageUrl: varchar("image_url", { length: 1000 }),
+  priceMin: decimal("price_min", { precision: 10, scale: 2 }),
+  priceMax: decimal("price_max", { precision: 10, scale: 2 }),
+  tierInfo: text("tier_info"),
+  rawHtml: text("raw_html"),
+  status: scrapeStatusEnum("status").default("pending").notNull(),
+  reviewedBy: uuid("reviewed_by").references(() => adminUsers.id),
+  scrapedAt: timestamp("scraped_at").defaultNow().notNull(),
+  reviewedAt: timestamp("reviewed_at"),
 });

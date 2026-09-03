@@ -29,7 +29,12 @@ export default function ApprovalsPage() {
     fetch("/api/admin/orders?status=pending_approval")
       .then((r) => r.json())
       .then((data) => {
-        setOrders(data);
+        setOrders(Array.isArray(data) ? data : []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch orders:", err);
+        setOrders([]);
         setLoading(false);
       });
   };
@@ -38,28 +43,42 @@ export default function ApprovalsPage() {
 
   const handleApprove = async (orderId: string) => {
     setProcessing(orderId);
-    await fetch("/api/admin/approve", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId, notes }),
-    });
-    setSelectedOrder(null);
-    setNotes("");
-    fetchOrders();
-    setProcessing(null);
+    try {
+      const res = await fetch("/api/admin/approve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId, notes }),
+      });
+      if (!res.ok) throw new Error("Failed to approve");
+      setSelectedOrder(null);
+      setNotes("");
+      fetchOrders();
+    } catch (err) {
+      console.error("Approve error:", err);
+      alert("承認に失敗しました。もう一度お試しください。");
+    } finally {
+      setProcessing(null);
+    }
   };
 
   const handleReject = async (orderId: string) => {
     setProcessing(orderId);
-    await fetch("/api/admin/reject", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId, notes }),
-    });
-    setSelectedOrder(null);
-    setNotes("");
-    fetchOrders();
-    setProcessing(null);
+    try {
+      const res = await fetch("/api/admin/reject", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId, notes }),
+      });
+      if (!res.ok) throw new Error("Failed to reject");
+      setSelectedOrder(null);
+      setNotes("");
+      fetchOrders();
+    } catch (err) {
+      console.error("Reject error:", err);
+      alert("却下に失敗しました。もう一度お試しください。");
+    } finally {
+      setProcessing(null);
+    }
   };
 
   if (loading) {

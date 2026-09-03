@@ -12,6 +12,7 @@ import {
   Mail,
   Home,
   Search,
+  Globe,
 } from "lucide-react";
 
 const navItems = [
@@ -20,6 +21,7 @@ const navItems = [
   { href: "/kicheleboyz/approvals", label: "承認待ち", icon: Clock },
   { href: "/kicheleboyz/events", label: "イベント", icon: Calendar },
   { href: "/kicheleboyz/orders", label: "注文", icon: ShoppingCart },
+  { href: "/kicheleboyz/scraper", label: "スクレイパー", icon: Globe },
   { href: "/kicheleboyz/ai", label: "AI", icon: Bot },
   { href: "/kicheleboyz/emails", label: "送信履歴", icon: Mail },
 ];
