@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, Shield, CreditCard, MapPin, Phone, Mail, Truck, Wrench, Key } from "lucide-react";
+import { Calendar, Shield, CreditCard, MapPin, Phone, Mail, Truck, Wrench, Key, Car } from "lucide-react";
 
 export default function ServicesPage() {
   const t = useTranslations("services");
