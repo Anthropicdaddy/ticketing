@@ -55,47 +55,45 @@
 }
 
 :root {
-  --background: #faf9f7;
-  --foreground: #1a1a2e;
-  --card: #ffffff;
-  --card-foreground: #1a1a2e;
-  --popover: #ffffff;
-  --popover-foreground: #1a1a2e;
-  --primary: #ff6b9d;
-  --primary-foreground: #ffffff;
-  --secondary: #f0efe9;
-  --secondary-foreground: #1a1a2e;
-  --muted: #f0efe9;
-  --muted-foreground: #6b6b7b;
-  --accent: #fff0f5;
-  --accent-foreground: #1a1a2e;
-  --destructive: #ff6b6b;
-  --border: #e8e7e1;
-  --input: #e8e7e1;
-  --ring: #ff6b9d;
-  --chart-1: #ff6b9d;
-  --chart-2: #ffd93d;
-  --chart-3: #6bcb77;
-  --chart-4: #4ecdc4;
-  --chart-5: #ff8c42;
-  --radius: 0.75rem;
-  --sakura: #ff6b9d;
-  --sakura-light: #fff0f5;
-  --sakura-dark: #e5548b;
-  --navy: #1a1a2e;
-  --gold: #ffd93d;
-  --mint: #6bcb77;
-  --sidebar: #faf9f7;
-  --sidebar-foreground: #1a1a2e;
-  --sidebar-primary: #ff6b9d;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #fff0f5;
-  --sidebar-accent-foreground: #1a1a2e;
-  --sidebar-border: #e8e7e1;
-  --sidebar-ring: #ff6b9d;
-  --font-sans: "Noto Sans JP", "Inter", system-ui, sans-serif;
+  --background: #0d0d0d;
+  --foreground: #f5f5f5;
+  --card: #1a1a1a;
+  --card-foreground: #f5f5f5;
+  --popover: #1a1a1a;
+  --popover-foreground: #f5f5f5;
+  --primary: #c9a961;
+  --primary-foreground: #0d0d0d;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #f5f5f5;
+  --muted: #1a1a1a;
+  --muted-foreground: #8899a8;
+  --accent: #1a1a1a;
+  --accent-foreground: #f5f5f5;
+  --destructive: #ef4444;
+  --border: rgba(201, 169, 97, 0.2);
+  --input: rgba(201, 169, 97, 0.3);
+  --ring: #c9a961;
+  --chart-1: #c9a961;
+  --chart-2: #b8941f;
+  --chart-3: #10b981;
+  --chart-4: #ef4444;
+  --chart-5: #3b82f6;
+  --radius: 0.5rem;
+  --gold: #c9a961;
+  --gold-dark: #b8941f;
+  --navy: #0d0d0d;
+  --navy-light: #1a1a1a;
+  --sidebar: #0d0d0d;
+  --sidebar-foreground: #f5f5f5;
+  --sidebar-primary: #c9a961;
+  --sidebar-primary-foreground: #0d0d0d;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #f5f5f5;
+  --sidebar-border: rgba(201, 169, 97, 0.2);
+  --sidebar-ring: #c9a961;
+  --font-sans: "Montserrat", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "SF Mono", monospace;
-  --font-heading: "Noto Sans JP", "Inter", system-ui, sans-serif;
+  --font-heading: "Playfair Display", "Montserrat", system-ui, sans-serif;
 }
 
 @layer base {
@@ -117,14 +115,11 @@
   .text-balance {
     text-wrap: balance;
   }
-  .gradient-sakura {
-    background: linear-gradient(135deg, #ff6b9d 0%, #ff8fb1 50%, #ffa7c4 100%);
+  .gradient-gold {
+    background: linear-gradient(135deg, #c9a961 0%, #e8d4a0 100%);
   }
   .gradient-navy {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  }
-  .gradient-warm {
-    background: linear-gradient(135deg, #faf9f7 0%, #fff0f5 100%);
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
   }
   .shadow-soft {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.02);
@@ -132,8 +127,8 @@
   .shadow-elevated {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 8px 32px rgba(0, 0, 0, 0.04);
   }
-  .sakura-glow {
-    box-shadow: 0 0 20px rgba(255, 107, 157, 0.15), 0 0 40px rgba(255, 107, 157, 0.05);
+  .gold-glow {
+    box-shadow: 0 0 20px rgba(201, 169, 97, 0.3), 0 0 40px rgba(201, 169, 97, 0.1);
   }
 }
 

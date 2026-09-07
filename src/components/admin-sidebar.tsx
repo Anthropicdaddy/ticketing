@@ -13,10 +13,12 @@ import {
   Home,
   Search,
   Globe,
+  Car,
 } from "lucide-react";
 
 const navItems = [
   { href: "/kicheleboyz", label: "ダッシュボード", icon: LayoutDashboard },
+  { href: "/kicheleboyz/cars", label: "車両管理", icon: Car },
   { href: "/kicheleboyz/requests", label: "チケットリクエスト", icon: Search },
   { href: "/kicheleboyz/approvals", label: "承認待ち", icon: Clock },
   { href: "/kicheleboyz/events", label: "イベント", icon: Calendar },

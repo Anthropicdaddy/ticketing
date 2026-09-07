@@ -15,7 +15,10 @@
   },
   "nav": {
     "home": "首页",
-    "events": "活动",
+    "cars": "库存",
+    "services": "服务",
+    "about": "关于我们",
+    "contact": "联系我们",
     "findTickets": "找票",
     "myOrders": "我的订单",
     "language": "语言"
@@ -75,12 +78,201 @@
     "ticketPassword": "门票密码",
     "ticketPasswordHint": "请输入以下密码打开PDF"
   },
+  "cars": {
+    "premiumAutomotive": "优质汽车",
+    "heroTitle": "驾驶您的 ",
+    "heroTitleHighlight": "梦想",
+    "heroDescription": "发现为挑剔的驾驶者精心策划的独家优质车辆系列。体验奢华、性能和无与伦比的服务。",
+    "inventory": "库存",
+    "featuredVehicles": "精选车辆",
+    "vehiclesFound": "辆车找到",
+    "noVehicles": "未找到车辆",
+    "noVehiclesDesc": "尝试调整搜索筛选器或稍后再试",
+    "make": "品牌",
+    "anyMake": "所有品牌",
+    "maxPrice": "最高价格",
+    "pricePlaceholder": "500,000",
+    "search": "搜索",
+    "clearFilters": "清除筛选",
+    "year": "年份",
+    "transmission": "变速箱",
+    "mileage": "里程",
+    "fuelType": "燃料类型",
+    "price": "价格",
+    "inquireNow": "立即咨询",
+    "contactForDetails": "联系了解详情",
+    "saveVehicle": "保存车辆",
+    "contactDealer": "联系经销商",
+    "description": "描述",
+    "notFound": "未找到车辆",
+    "backToInventory": "返回库存"
+  },
+  "services": {
+    "pageTitle": "如何购买您的车辆",
+    "inventory": "库存",
+    "services": "服务",
+    "about": "关于我们",
+    "contact": "联系我们",
+    "documentsTitle": "必要的详细信息和文件",
+    "documentsDescription": "开始前，请确保准备好以下文件：",
+    "documents": {
+      "id": "国民身份证 / 公司注册证",
+      "kraPin": "KRA PIN 证书",
+      "phone": "联系电话",
+      "email": "电子邮箱",
+      "ntsa": "有效的 NTSA TIMS 账户"
+    },
+    "processTitle": "购买流程",
+    "step1": {
+      "title": "选择您的车辆",
+      "description": "浏览我们的车型，通过网站、WhatsApp、热线或亲自到店与销售代表联系。"
+    },
+    "step2": {
+      "title": "预约检查",
+      "description": "安排场内检查，确保车辆符合您的标准和要求。"
+    },
+    "step3": {
+      "title": "验证",
+      "description": "购买前验证车辆详情。",
+      "items": [
+        "检查车辆里程",
+        "验证行车证详情",
+        "确认卖家银行信息"
+      ]
+    },
+    "step4": {
+      "title": "报价",
+      "description": "向销售团队索取形式发票。"
+    },
+    "step5": {
+      "title": "确认",
+      "description": "完成付款并分享转账确认。"
+    },
+    "step6": {
+      "title": "文件和交付",
+      "description": "完成过户并接收车辆。",
+      "items": [
+        "完成销售协议",
+        "通过有效的 NTSA TIMS 账户完成过户",
+        "从卖家处接收原始行车证",
+        "准备车辆，确保所有必要配件和工具齐全",
+        "完成洗车和美容",
+        "将车辆交付给您，自豪的新车主"
+      ]
+    },
+    "finance": {
+      "title": "资产融资",
+      "documentsTitle": "必要的详细信息和文件",
+      "documentsDescription": "申请资产融资，请准备以下文件：",
+      "documents": {
+        "bankStatements": "银行对账单（过去6个月）",
+        "mpesaStatements": "Mpesa 对账单（过去6个月）",
+        "employment": "就业 / 业务确认文件",
+        "salarySlips": "工资单（过去6个月）",
+        "id": "国民身份证 / 公司注册证",
+        "kraPin": "KRA PIN 证书",
+        "phone": "联系电话",
+        "email": "电子邮箱",
+        "ntsa": "有效的 NTSA TIMS 账户"
+      },
+      "processTitle": "资格和审批流程",
+      "step1": {
+        "title": "检查资格",
+        "description": "与您首选的融资机构确认资格，无论是银行、SACCO 还是小额贷款机构。我们的销售代理可提供协助。"
+      },
+      "step2": {
+        "title": "提交文件",
+        "description": "向选定的融资机构提供所有必要文件，并获得融资资格确认。"
+      },
+      "step3": {
+        "title": "车辆预订",
+        "description": "支付定金预订车辆。"
+      },
+      "step4": {
+        "title": "融资批准",
+        "description": "与融资机构合作获得贷款批准。"
+      },
+      "step5": {
+        "title": "承诺 / 释放信",
+        "description": "完成车辆交付的最后步骤。",
+        "items": [
+          "完成您的付款部分",
+          "卖家将完成过户并提交剩余文件"
+        ]
+      }
+    },
+    "cta": "开始您的购车之旅"
+  },
+  "about": {
+    "pageTitle": "关于我们",
+    "inventory": "库存",
+    "services": "服务",
+    "about": "关于我们",
+    "contact": "联系我们",
+    "subtitle": "体验开放道路的自由",
+    "description": "与 Motor Hut 一起体验开放道路的刺激。探索我们为各种冒险精心打造的多样化创新车辆阵容。无论您渴望 SUV 的动力和多功能性、轿车的时尚精致，还是卡车的坚固可靠，Motor Hut 都有完美的驾驶伴侣来匹配您的生活方式。",
+    "whatWeOffer": "我们提供：",
+    "features": {
+      "vehicles": "丰富的车辆选择",
+      "vehiclesDesc": "探索我们多样化的新车和二手车库存，包括轿车、SUV、卡车等。找到适合您需求和预算的完美车辆。",
+      "certified": "认证二手车",
+      "certifiedDesc": "选购我们的认证二手车，每辆车都经过严格检查，并附带全面保修，让您更安心。",
+      "financing": "灵活的融资选项",
+      "financingDesc": "我们经验丰富的融资团队将帮助您找到最适合预算的融资方案。获得预批准，开走您的梦想座驾。",
+      "service": "专业汽车保养服务",
+      "serviceDesc": "从常规保养到大修，我们的认证技师使用最先进的设备，让您的车辆保持最佳状态。",
+      "support": "友好的客户服务",
+      "supportDesc": "我们的专业团队将在每一步为您提供帮助，从浏览到购买乃至售后。",
+      "quality": "质量保证",
+      "qualityDesc": "每辆车都经过全面检查，确保符合我们的高质量和可靠性标准。"
+    },
+    "ourServices": "我们的服务",
+    "services": {
+      "vehicles": "丰富的车辆选择",
+      "vehiclesDesc": "探索我们多样化的新车和二手车库存，包括轿车、SUV、卡车等。找到适合您需求和预算的完美车辆。",
+      "certified": "认证二手车",
+      "certifiedDesc": "选购我们的认证二手车，每辆车都经过严格检查，并附带全面保修，让您更安心。",
+      "financing": "灵活的融资选项",
+      "financingDesc": "我们经验丰富的融资团队将帮助您找到最适合预算的融资方案。获得预批准，开走您的梦想座驾。"
+    },
+    "teamTitle": "认识我们的团队",
+    "teamDescription": "我们是一群充满激情的汽车爱好者，致力于为您提供卓越的购车体验。",
+    "teamCta": "联系我们"
+  },
+  "contact": {
+    "pageTitle": "联系我们",
+    "inventory": "库存",
+    "services": "服务",
+    "about": "关于我们",
+    "contact": "联系我们",
+    "subtitle": "有疑问？我们乐意倾听。与我们的团队取得联系。",
+    "contactInfo": "联系信息",
+    "address": "地址",
+    "phone": "电话",
+    "email": "邮箱",
+    "website": "网站",
+    "businessHours": "营业时间",
+    "hours": {
+      "monSat": "周一 - 周六",
+      "sun": "周日"
+    },
+    "sendMessage": "发送消息",
+    "name": "姓名",
+    "email": "电子邮箱",
+    "subject": "主题",
+    "message": "消息",
+    "submit": "发送",
+    "submitting": "发送中...",
+    "submitSuccess": "谢谢！我们将在24小时内回复您。",
+    "submitError": "发送失败，请重试。"
+  },
   "admin": {
     "dashboard": "控制面板",
     "events": "活动管理",
     "orders": "订单管理",
     "approvals": "待批准",
     "requests": "门票请求",
+    "cars": "车辆管理",
     "ai": "AI助手",
     "emailLogs": "发送记录",
     "stats": {

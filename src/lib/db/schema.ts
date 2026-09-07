@@ -51,6 +51,12 @@ export const scrapeStatusEnum = pgEnum("scrape_status", [
   "rejected",
 ]);
 
+export const carStatusEnum = pgEnum("car_status", [
+  "available",
+  "sold",
+  "reserved",
+]);
+
 export const events = pgTable("events", {
   id: uuid("id").defaultRandom().primaryKey(),
   titleJa: varchar("title_ja", { length: 255 }).notNull(),
@@ -196,4 +202,20 @@ export const scrapedEvents = pgTable("scraped_events", {
   reviewedBy: uuid("reviewed_by").references(() => adminUsers.id),
   scrapedAt: timestamp("scraped_at").defaultNow().notNull(),
   reviewedAt: timestamp("reviewed_at"),
+});
+
+export const cars = pgTable("cars", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  make: varchar("make", { length: 100 }).notNull(),
+  model: varchar("model", { length: 100 }).notNull(),
+  year: integer("year").notNull(),
+  price: decimal("price", { precision: 12, scale: 2 }).notNull(),
+  mileage: integer("mileage").notNull(),
+  transmission: varchar("transmission", { length: 20 }).notNull(),
+  fuel: varchar("fuel", { length: 20 }).notNull(),
+  status: carStatusEnum("status").default("available").notNull(),
+  description: text("description"),
+  imageUrl: varchar("image_url", { length: 500 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
