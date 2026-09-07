@@ -36,7 +36,7 @@ export default function CarsPage() {
   const t = useTranslations("cars");
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedMake, setSelectedMake] = useState("");
+  const [selectedMake, setSelectedMake] = useState<string | null>(null);
   const [maxPrice, setMaxPrice] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -158,7 +158,7 @@ export default function CarsPage() {
                 <label className="text-xs font-semibold tracking-widest text-primary uppercase mb-2 block invisible">
                   Clear
                 </label>
-                <Button type="button" variant="outline" onClick={() => { setSelectedMake(""); setMaxPrice(""); setCurrentPage(1); }} className="w-full h-12">
+                <Button type="button" variant="outline" onClick={() => { setSelectedMake(null); setMaxPrice(""); setCurrentPage(1); }} className="w-full h-12">
                   {t("clearFilters")}
                 </Button>
               </div>
