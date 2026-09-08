@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Phone, Mail, Globe, Clock, MessageSquare, Loader2 } from "lucide-react";
+import { MapPin, Phone, Mail, Globe, Clock, MessageSquare, Loader2, CreditCard } from "lucide-react";
 
 const WHATSAPP_NUMBER = "254707242805";
 

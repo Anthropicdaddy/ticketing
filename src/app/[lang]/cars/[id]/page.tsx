@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Car, Calendar, Settings, Gauge, Fuel, ChevronLeft, ChevronRight, Share2, Heart, MapPin, Phone, MessageSquare } from "lucide-react";
+import { Loader2, Car, Calendar, Settings, Gauge, Fuel, ChevronLeft, ChevronRight, Share2, Heart, MapPin, Phone, Mail, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Car {

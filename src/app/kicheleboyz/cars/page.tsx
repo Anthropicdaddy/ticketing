@@ -329,7 +329,7 @@ export default function AdminCarsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">Transmission *</label>
-                  <Select value={formData.transmission} onValueChange={(v) => setFormData({ ...formData, transmission: v })}>
+                  <Select value={formData.transmission} onValueChange={(v) => v && setFormData({ ...formData, transmission: v })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -342,7 +342,7 @@ export default function AdminCarsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">Fuel Type *</label>
-                  <Select value={formData.fuel} onValueChange={(v) => setFormData({ ...formData, fuel: v })}>
+                  <Select value={formData.fuel} onValueChange={(v) => v && setFormData({ ...formData, fuel: v })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -355,7 +355,7 @@ export default function AdminCarsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">Status *</label>
-                  <Select value={formData.status} onValueChange={(v) => setFormData({ ...formData, status: v })}>
+                  <Select value={formData.status} onValueChange={(v) => v && setFormData({ ...formData, status: v })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
