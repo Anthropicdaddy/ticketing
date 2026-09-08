@@ -1,17 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Phone, Mail, Globe, Clock, CheckCircle2, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { MapPin, Phone, Mail, Globe, Clock, MessageSquare, Loader2 } from "lucide-react";
+
+const WHATSAPP_NUMBER = "254707242805";
 
 export default function ContactPage() {
-  const t = useTranslations("contact");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,50 +23,48 @@ export default function ContactPage() {
     setStatus("submitting");
     setErrorMessage("");
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) throw new Error("Failed to submit");
-
-      setStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch {
-      setStatus("error");
-      setErrorMessage(t("submitError"));
-    }
+    // Open WhatsApp with form data
+    const message = `Hi Motor Hut, ${formData.name} (${formData.email}) wants to inquire about: ${formData.subject}. Message: ${formData.message}`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+    
+    setStatus("success");
+    setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
   const contactInfo = [
     {
       icon: MapPin,
-      title: t("address"),
+      title: "Address",
       details: ["Argwings Kodhek Rd", "Nairobi, Kenya"],
     },
     {
       icon: Phone,
-      title: t("phone"),
-      details: ["+254 72 363 6787"],
+      title: "Phone",
+      details: ["+254 707 242 805"],
     },
     {
       icon: Mail,
-      title: t("email"),
+      title: "Email",
       details: ["motorhutltd@gmail.com"],
     },
     {
       icon: Globe,
-      title: t("website"),
+      title: "Website",
       details: ["motorhut.co.ke"],
     },
   ];
 
   const businessHours = [
-    { day: t("hours.monSat"), time: "08:00 - 18:00" },
-    { day: t("hours.sun"), time: "10:00 - 16:00" },
+    { day: "Mon - Sat", time: "08:00 - 18:00" },
+    { day: "Sun", time: "10:00 - 16:00" },
   ];
+
+  const openWhatsApp = (prefillMessage?: string) => {
+    const message = prefillMessage || "Hi Motor Hut, I'd like to inquire about your vehicles.";
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  };
 
   return (
     <main className="min-h-screen bg-background">
@@ -82,16 +77,16 @@ export default function ContactPage() {
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/cars" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("inventory")}
+              Inventory
             </Link>
             <Link href="/services" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("services")}
+              Services
             </Link>
             <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("about")}
+              About
             </Link>
             <Link href="/contact" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-              {t("contact")}
+              Contact
             </Link>
           </div>
         </div>
@@ -101,17 +96,17 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              {t("pageTitle")}
+              Contact Us
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t("subtitle")}
+              Have questions? We'd love to hear from you. Get in touch with our team via WhatsApp for the fastest response.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-10">
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-primary mb-6">{t("contactInfo")}</h2>
+                <h2 className="text-2xl font-bold text-primary mb-6">Contact Information</h2>
                 <div className="space-y-6">
                   {contactInfo.map((item, i) => (
                     <div key={i} className="flex gap-4 p-5 bg-card rounded-xl border border-border/50">
@@ -132,7 +127,7 @@ export default function ContactPage() {
               <div className="p-5 bg-card rounded-xl border border-border/50">
                 <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Clock className="w-5 h-5 text-primary" />
-                  {t("businessHours")}
+                  Business Hours
                 </h3>
                 <ul className="space-y-3">
                   {businessHours.map((hour, i) => (
@@ -143,47 +138,54 @@ export default function ContactPage() {
                   ))}
                 </ul>
               </div>
+
+              <div className="p-5 bg-primary/10 border border-primary/20 rounded-xl">
+                <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-primary" />
+                  Quick Contact via WhatsApp
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  For immediate assistance, click below to chat with us directly on WhatsApp.
+                </p>
+                <div className="flex gap-3">
+                  <Button onClick={() => openWhatsApp("Hi Motor Hut, I'd like to inquire about your vehicles.")} className="flex-1">
+                    <MessageSquare className="w-5 h-5 mr-2" />
+                    General Inquiry
+                  </Button>
+                  <Button onClick={() => openWhatsApp("Hi Motor Hut, I need help with financing for a vehicle.")} variant="outline" className="flex-1">
+                    <CreditCard className="w-5 h-5 mr-2" />
+                    Financing Help
+                  </Button>
+                </div>
+              </div>
             </div>
 
             <Card className="border-border/50">
               <CardHeader className="pb-3">
-                <CardTitle className="text-2xl font-bold text-foreground">{t("sendMessage")}</CardTitle>
+                <CardTitle className="text-2xl font-bold text-foreground">Send Us a Message</CardTitle>
               </CardHeader>
               <CardContent>
-                {status === "success" && (
-                  <div className="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center gap-3 text-green-400">
-                    <CheckCircle2 className="w-5 h-5" />
-                    <p>{t("submitSuccess")}</p>
-                  </div>
-                )}
-
-                {status === "error" && (
-                  <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg flex items-center gap-3 text-red-400">
-                    <span className="w-5 h-5">✕</span>
-                    <p>{errorMessage}</p>
-                  </div>
-                )}
-
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                      {t("name")}
+                      Full Name
                     </label>
-                    <Input
+                    <input
                       id="name"
+                      type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="John Doe"
                       required
                       disabled={status === "submitting"}
-                      className="h-11"
+                      className="w-full h-11 px-4 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                     />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                      {t("email")}
+                      Email Address
                     </label>
-                    <Input
+                    <input
                       id="email"
                       type="email"
                       value={formData.email}
@@ -191,49 +193,61 @@ export default function ContactPage() {
                       placeholder="john@example.com"
                       required
                       disabled={status === "submitting"}
-                      className="h-11"
+                      className="w-full h-11 px-4 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                     />
                   </div>
                   <div>
                     <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
-                      {t("subject")}
+                      Subject
                     </label>
-                    <Input
+                    <input
                       id="subject"
+                      type="text"
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       placeholder="Vehicle inquiry / General question / etc."
                       required
                       disabled={status === "submitting"}
-                      className="h-11"
+                      className="w-full h-11 px-4 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                     />
                   </div>
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-                      {t("message")}
+                      Message
                     </label>
-                    <Textarea
+                    <textarea
                       id="message"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Tell us how we can help you..."
                       required
                       disabled={status === "submitting"}
-                      className="min-h-[150px]"
+                      className="w-full min-h-[150px] px-4 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                     />
                   </div>
                   <Button
                     type="submit"
                     disabled={status === "submitting"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSubmit(e);
+                      // Also open WhatsApp with the form data
+                      const message = `Hi Motor Hut, ${formData.name} (${formData.email}) wants to inquire about: ${formData.subject}. Message: ${formData.message}`;
+                      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+                      window.open(url, '_blank');
+                    }}
                     className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
                   >
                     {status === "submitting" ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                        {t("submitting")}
+                        Sending...
                       </>
                     ) : (
-                      t("submit")
+                      <>
+                        <MessageSquare className="w-5 h-5 mr-2" />
+                        Send via WhatsApp
+                      </>
                     )}
                   </Button>
                 </form>

@@ -5,27 +5,13 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
-  Calendar,
-  ShoppingCart,
-  Clock,
-  Bot,
-  Mail,
-  Home,
-  Search,
-  Globe,
   Car,
+  Home,
 } from "lucide-react";
 
 const navItems = [
-  { href: "/kicheleboyz", label: "ダッシュボード", icon: LayoutDashboard },
-  { href: "/kicheleboyz/cars", label: "車両管理", icon: Car },
-  { href: "/kicheleboyz/requests", label: "チケットリクエスト", icon: Search },
-  { href: "/kicheleboyz/approvals", label: "承認待ち", icon: Clock },
-  { href: "/kicheleboyz/events", label: "イベント", icon: Calendar },
-  { href: "/kicheleboyz/orders", label: "注文", icon: ShoppingCart },
-  { href: "/kicheleboyz/scraper", label: "スクレイパー", icon: Globe },
-  { href: "/kicheleboyz/ai", label: "AI", icon: Bot },
-  { href: "/kicheleboyz/emails", label: "送信履歴", icon: Mail },
+  { href: "/kicheleboyz", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/kicheleboyz/cars", label: "Cars Management", icon: Car },
 ];
 
 export function AdminSidebar() {
@@ -36,10 +22,10 @@ export function AdminSidebar() {
       <div className="p-5 border-b border-border/50">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-base font-bold tracking-tight text-foreground">
-            Kippo<span className="text-primary">🌸</span>
+            MOTOR <span className="text-primary">HUT</span>
           </span>
         </Link>
-        <p className="text-[10px] text-muted-foreground mt-0.5">管理画面</p>
+        <p className="text-[10px] text-muted-foreground mt-0.5">Admin Panel</p>
       </div>
 
       <nav className="flex-1 p-3 space-y-0.5">
@@ -72,7 +58,7 @@ export function AdminSidebar() {
           className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all duration-150"
         >
           <Home className="w-4 h-4" />
-          サイトを見る
+          View Site
         </Link>
       </div>
     </aside>

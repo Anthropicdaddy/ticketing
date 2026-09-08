@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Car, Calendar, Settings, Gauge, Fuel, ChevronLeft, ChevronRight, Share2, Heart, MapPin, Phone, Mail } from "lucide-react";
+import { Loader2, Car, Calendar, Settings, Gauge, Fuel, ChevronLeft, ChevronRight, Share2, Heart, MapPin, Phone, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Car {
@@ -25,10 +24,11 @@ interface Car {
   createdAt: string;
 }
 
+const WHATSAPP_NUMBER = "254707242805";
+
 export default function CarDetailPage() {
   const router = useRouter();
   const params = useParams();
-  const t = useTranslations("cars");
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
   const [imageIndex, setImageIndex] = useState(0);
@@ -61,9 +61,9 @@ export default function CarDetailPage() {
       <main className="min-h-screen bg-background">
         <div className="flex items-center justify-center py-20 text-center">
           <Car className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-          <p className="text-muted-foreground text-lg">{t("notFound")}</p>
+          <p className="text-muted-foreground text-lg">Vehicle not found</p>
           <Button onClick={() => router.push("/cars")} className="mt-4">
-            {t("backToInventory")}
+            Back to Inventory
           </Button>
         </div>
       </main>
@@ -79,6 +79,12 @@ export default function CarDetailPage() {
     }).format(Number(price));
   };
 
+  const openWhatsApp = () => {
+    const message = `Hi Motor Hut, I'm interested in the ${car.year} ${car.make} ${car.model} (${car.id}). Price: ${formatPrice(car.price)}. Can you share more details and photos?`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  };
+
   return (
     <main className="min-h-screen bg-background">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border/50">
@@ -90,16 +96,16 @@ export default function CarDetailPage() {
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/cars" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("inventory")}
+              Inventory
             </Link>
             <Link href="/services" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("services")}
+              Services
             </Link>
             <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("about")}
+              About
             </Link>
             <Link href="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("contact")}
+              Contact
             </Link>
           </div>
         </div>
@@ -133,27 +139,6 @@ export default function CarDetailPage() {
                   </div>
                 )}
               </div>
-              <div className="flex gap-2 justify-center">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setImageIndex(i => Math.max(0, i - 1))}
-                  disabled={imageIndex === 0}
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </Button>
-                <span className="flex items-center text-sm text-muted-foreground">
-                  {imageIndex + 1} / 1
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setImageIndex(i => Math.min(0, i + 1))}
-                  disabled={imageIndex >= 0}
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              </div>
             </div>
 
             <div className="space-y-6">
@@ -169,28 +154,28 @@ export default function CarDetailPage() {
                 <div className="flex items-center gap-3 p-4 bg-background rounded-xl border border-border/50">
                   <Calendar className="w-6 h-6 text-primary" />
                   <div>
-                    <p className="text-xs text-muted-foreground">{t("year")}</p>
+                    <p className="text-xs text-muted-foreground">Year</p>
                     <p className="font-semibold text-foreground">{car.year}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-4 bg-background rounded-xl border border-border/50">
                   <Settings className="w-6 h-6 text-primary" />
                   <div>
-                    <p className="text-xs text-muted-foreground">{t("transmission")}</p>
+                    <p className="text-xs text-muted-foreground">Transmission</p>
                     <p className="font-semibold text-foreground">{car.transmission}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-4 bg-background rounded-xl border border-border/50">
                   <Gauge className="w-6 h-6 text-primary" />
                   <div>
-                    <p className="text-xs text-muted-foreground">{t("mileage")}</p>
+                    <p className="text-xs text-muted-foreground">Mileage</p>
                     <p className="font-semibold text-foreground">{car.mileage.toLocaleString()} km</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-4 bg-background rounded-xl border border-border/50">
                   <Fuel className="w-6 h-6 text-primary" />
                   <div>
-                    <p className="text-xs text-muted-foreground">{t("fuelType")}</p>
+                    <p className="text-xs text-muted-foreground">Fuel Type</p>
                     <p className="font-semibold text-foreground">{car.fuel}</p>
                   </div>
                 </div>
@@ -198,34 +183,32 @@ export default function CarDetailPage() {
 
               {car.description && (
                 <div className="pt-4 border-t border-border/50">
-                  <h3 className="text-lg font-semibold text-foreground mb-2">{t("description")}</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Description</h3>
                   <p className="text-muted-foreground leading-relaxed">{car.description}</p>
                 </div>
               )}
 
               <div className="pt-4 border-t border-border/50 flex flex-col sm:flex-row gap-3">
-                <Button size="lg" className="flex-1 h-14 bg-primary text-primary-foreground hover:bg-primary/90">
-                  {car.status === "available" ? t("inquireNow") : t("contactForDetails")}
+                <Button size="lg" className="flex-1 h-14 bg-primary text-primary-foreground hover:bg-primary/90" onClick={openWhatsApp}>
+                  <MessageSquare className="w-5 h-5 mr-2" />
+                  Inquire on WhatsApp
                 </Button>
                 <Button size="lg" variant="outline" className="flex-1 h-14">
                   <Heart className="w-5 h-5 mr-2" />
-                  {t("saveVehicle")}
-                </Button>
-                <Button size="lg" variant="ghost" className="h-14">
-                  <Share2 className="w-5 h-5" />
+                  Save Vehicle
                 </Button>
               </div>
 
               <div className="pt-4 border-t border-border/50">
-                <h3 className="text-lg font-semibold text-foreground mb-4">{t("contactDealer")}</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-4">Contact Dealer</h3>
                 <div className="grid grid-cols-3 gap-4">
                   <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 bg-background rounded-xl border border-border/50 hover:border-primary/50 transition-colors">
                     <MapPin className="w-5 h-5 text-primary" />
                     <span className="text-sm text-muted-foreground">Argwings Kodhek Rd, Nairobi</span>
                   </a>
-                  <a href="tel:+254723636787" className="flex items-center gap-2 p-3 bg-background rounded-xl border border-border/50 hover:border-primary/50 transition-colors">
+                  <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 bg-background rounded-xl border border-border/50 hover:border-primary/50 transition-colors">
                     <Phone className="w-5 h-5 text-primary" />
-                    <span className="text-sm text-muted-foreground">+254 72 363 6787</span>
+                    <span className="text-sm text-muted-foreground">+254 707 242 805</span>
                   </a>
                   <a href="mailto:motorhutltd@gmail.com" className="flex items-center gap-2 p-3 bg-background rounded-xl border border-border/50 hover:border-primary/50 transition-colors">
                     <Mail className="w-5 h-5 text-primary" />

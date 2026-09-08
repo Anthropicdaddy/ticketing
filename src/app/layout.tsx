@@ -1,6 +1,5 @@
 import "./globals.css";
 import { Montserrat, Playfair_Display } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -28,10 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html className={`${montserrat.variable} ${playfair.variable}`}>
-        <body className="font-sans antialiased">{children}</body>
-      </html>
-    </ClerkProvider>
+    <html className={`${montserrat.variable} ${playfair.variable}`}>
+      <body className="font-sans antialiased">{children}</body>
+    </html>
   );
 }

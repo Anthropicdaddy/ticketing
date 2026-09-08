@@ -1,26 +1,23 @@
-import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { Car, Shield, CreditCard, Wrench, Users, Star, MapPin, Phone, Mail, Globe } from "lucide-react";
+import { Car, Shield, CreditCard, Wrench, Users, Star } from "lucide-react";
+
+const features = [
+  { icon: Car, title: "Wide Selection of Vehicles", description: "Explore our diverse inventory of new and pre-owned vehicles, including sedans, SUVs, trucks, and more. Find the perfect vehicle to suit your needs and budget." },
+  { icon: Shield, title: "Certified Pre-Owned Vehicles", description: "Shop our selection of certified pre-owned vehicles, each rigorously inspected and backed by a comprehensive warranty for added peace of mind." },
+  { icon: CreditCard, title: "Flexible Financing Options", description: "Our experienced finance team is here to help you find the best financing options for your budget. Get pre-approved for financing and drive home your dream car today." },
+  { icon: Wrench, title: "Professional Car Care Services", description: "From routine maintenance to major repairs, our certified technicians use state-of-the-art equipment to keep your vehicle running smoothly." },
+  { icon: Users, title: "Friendly Customer Service", description: "Our dedicated team is here to assist you every step of the way, from browsing to purchase and beyond." },
+  { icon: Star, title: "Quality Assurance", description: "Every vehicle undergoes a comprehensive inspection to ensure it meets our high standards of quality and reliability." },
+];
+
+const services = [
+  { icon: Car, title: "Wide Selection of Vehicles", description: "Explore our diverse inventory of new and pre-owned vehicles, including sedans, SUVs, trucks, and more. Find the perfect vehicle to suit your needs and budget." },
+  { icon: Shield, title: "Certified Pre-Owned Vehicles", description: "Shop our selection of certified pre-owned vehicles, each rigorously inspected and backed by a comprehensive warranty for added peace of mind." },
+  { icon: CreditCard, title: "Flexible Financing Options", description: "Our experienced finance team is here to help you find the best financing options for your budget. Get pre-approved for financing and drive home your dream car today." },
+];
 
 export default function AboutPage() {
-  const t = useTranslations("about");
-
-  const features = [
-    { icon: Car, title: t("features.vehicles"), description: t("features.vehiclesDesc") },
-    { icon: Shield, title: t("features.certified"), description: t("features.certifiedDesc") },
-    { icon: CreditCard, title: t("features.financing"), description: t("features.financingDesc") },
-    { icon: Wrench, title: t("features.service"), description: t("features.serviceDesc") },
-    { icon: Users, title: t("features.support"), description: t("features.supportDesc") },
-    { icon: Star, title: t("features.quality"), description: t("features.qualityDesc") },
-  ];
-
-  const services = [
-    { icon: Car, title: t("services.vehicles"), description: t("services.vehiclesDesc") },
-    { icon: Shield, title: t("services.certified"), description: t("services.certifiedDesc") },
-    { icon: CreditCard, title: t("services.financing"), description: t("services.financingDesc") },
-  ];
-
   return (
     <main className="min-h-screen bg-background">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border/50">
@@ -32,16 +29,16 @@ export default function AboutPage() {
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/cars" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("inventory")}
+              Inventory
             </Link>
             <Link href="/services" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("services")}
+              Services
             </Link>
             <Link href="/about" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-              {t("about")}
+              About
             </Link>
             <Link href="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("contact")}
+              Contact
             </Link>
           </div>
         </div>
@@ -50,21 +47,21 @@ export default function AboutPage() {
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-center text-foreground mb-4">
-            {t("pageTitle")}
+            About Us
           </h1>
 
           <div className="text-center mb-16">
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-6">
-              {t("subtitle")}
+              Experience the Freedom of the Open Road
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              {t("description")}
+              Experience the thrill of the open road with Motor Hut. Explore our diverse lineup of innovative vehicles, meticulously crafted for every adventure, big or small. Whether you crave the power and versatility of our SUVs, the sleek sophistication of our sedans, or the rugged dependability of our trucks, Motor Hut has the perfect driving companion to match your lifestyle.
             </p>
           </div>
 
           <section className="mb-16">
             <h3 className="text-xl font-semibold text-center text-primary mb-10">
-              {t("whatWeOffer")}
+              We offer:
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {features.map((feature, i) => (
@@ -83,7 +80,7 @@ export default function AboutPage() {
 
           <section className="mb-16">
             <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-10">
-              {t("ourServices")}
+              Our Services
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
               {services.map((service, i) => (
@@ -102,14 +99,14 @@ export default function AboutPage() {
 
           <div className="text-center py-12 bg-card/50 rounded-2xl border border-border/50">
             <h3 className="text-xl font-semibold text-foreground mb-4">
-              {t("teamTitle")}
+              Meet Our Team
             </h3>
             <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-              {t("teamDescription")}
+              We're a team of passionate automotive enthusiasts dedicated to providing you with an exceptional car buying experience.
             </p>
             <Link href="/contact">
               <button className="inline-flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition-colors">
-                {t("teamCta")}
+                Contact Us
                 <span>→</span>
               </button>
             </Link>

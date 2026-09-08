@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Car, ChevronLeft, ChevronRight } from "lucide-react";
+import { Car, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Car {
@@ -31,9 +29,6 @@ const makes = [
 ];
 
 export default function CarsPage() {
-  const pathname = usePathname();
-  const router = useRouter();
-  const t = useTranslations("cars");
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMake, setSelectedMake] = useState<string | null>(null);
@@ -68,6 +63,15 @@ export default function CarsPage() {
     currentPage * carsPerPage
   );
 
+  const formatPrice = (price: string) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(Number(price));
+  };
+
   return (
     <main className="min-h-screen bg-background">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border/50">
@@ -79,16 +83,16 @@ export default function CarsPage() {
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/cars" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-              {t("inventory")}
+              Inventory
             </Link>
             <Link href="/services" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("services")}
+              Services
             </Link>
             <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("about")}
+              About
             </Link>
             <Link href="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              {t("contact")}
+              Contact
             </Link>
           </div>
         </div>
@@ -103,28 +107,28 @@ export default function CarsPage() {
         <div className="max-w-7xl mx-auto text-center relative">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs font-medium text-muted-foreground">{t("premiumAutomotive")}</span>
+            <span className="text-xs font-medium text-muted-foreground">Premium Automotive</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground mb-6 leading-[1.1]">
-            {t("heroTitle")}
+            Drive Your
             <br />
-            <span className="text-primary">{t("heroTitleHighlight")}</span>
+            <span className="text-primary">Dream</span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
-            {t("heroDescription")}
+            Discover an exclusive collection of premium vehicles meticulously curated for discerning drivers. Experience luxury, performance, and unparalleled service.
           </p>
 
           <form onSubmit={handleSearch} className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label htmlFor="make" className="text-xs font-semibold tracking-widest text-primary uppercase mb-2 block">
-                  {t("make")}
+                  Make
                 </label>
                 <Select value={selectedMake} onValueChange={setSelectedMake}>
                   <SelectTrigger id="make" className="h-12 bg-background border-border/50">
-                    <SelectValue placeholder={t("anyMake")} />
+                    <SelectValue placeholder="Any Make" />
                   </SelectTrigger>
                   <SelectContent>
                     {makes.map((make) => (
@@ -135,14 +139,14 @@ export default function CarsPage() {
               </div>
               <div>
                 <label htmlFor="maxPrice" className="text-xs font-semibold tracking-widest text-primary uppercase mb-2 block">
-                  {t("maxPrice")}
+                  Max Price
                 </label>
                 <input
                   id="maxPrice"
                   type="number"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
-                  placeholder={t("pricePlaceholder")}
+                  placeholder="50,000"
                   className="w-full h-12 px-4 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
@@ -151,7 +155,7 @@ export default function CarsPage() {
                   Search
                 </label>
                 <Button type="submit" className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90">
-                  {t("search")}
+                  Search
                 </Button>
               </div>
               <div>
@@ -159,7 +163,7 @@ export default function CarsPage() {
                   Clear
                 </label>
                 <Button type="button" variant="outline" onClick={() => { setSelectedMake(null); setMaxPrice(""); setCurrentPage(1); }} className="w-full h-12">
-                  {t("clearFilters")}
+                  Clear Filters
                 </Button>
               </div>
             </div>
@@ -171,10 +175,10 @@ export default function CarsPage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
-              {t("featuredVehicles")}
+              Featured Vehicles
             </h2>
             <span className="text-sm text-muted-foreground">
-              {cars.length} {t("vehiclesFound")}
+              {cars.length} vehicles found
             </span>
           </div>
 
@@ -195,8 +199,8 @@ export default function CarsPage() {
           ) : paginatedCars.length === 0 ? (
             <div className="text-center py-20">
               <Car className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-              <p className="text-muted-foreground text-lg">{t("noVehicles")}</p>
-              <p className="text-sm text-muted-foreground/60 mt-2">{t("noVehiclesDesc")}</p>
+              <p className="text-muted-foreground text-lg">No vehicles found</p>
+              <p className="text-sm text-muted-foreground/60 mt-2">Try adjusting your search filters or check back later</p>
             </div>
           ) : (
             <>
@@ -252,8 +256,8 @@ export default function CarsPage() {
 
                         <div className="pt-4 border-t border-border/50 flex items-center justify-between">
                           <div>
-                            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">{t("price")}</span>
-                            <p className="text-lg font-bold text-foreground">$${Number(car.price).toLocaleString()}</p>
+                            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Price</span>
+                            <p className="text-lg font-bold text-foreground">{formatPrice(car.price)}</p>
                           </div>
                           <div className="w-8 h-8 rounded-full bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                             <ChevronRight className="w-4 h-4" />
