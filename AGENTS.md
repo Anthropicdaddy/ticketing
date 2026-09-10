@@ -157,14 +157,3 @@ If rebuilding from scratch:
 7. **Admin panel**: Simple CRUD at `/kicheleboyz/cars`
 8. **Style**: Navy/Gold theme with Playfair + Montserrat fonts
 9. **Deploy**: Push to GitHub → Vercel → Add DB URL
-
-## Removed Features (from original ticketing app)
-
-- Clerk authentication
-- next-intl i18n (now English only)
-- Ticket requests/approvals
-- Event management
-- AI scraper
-- Telegram bot
-- PDF ticket generation
-- PayPay payment flow
